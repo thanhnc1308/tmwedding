@@ -10,6 +10,7 @@ import {
   DeleteAction,
   Status,
   UpdateAction,
+  ViewInvitationAction,
 } from '@/features/guest-list/components/Table';
 
 import { Guest, GuestConfirmationStatus } from '@/types/guest';
@@ -115,6 +116,7 @@ export default async function GuestListPage(props: {
               <>
                 <UpdateAction id={guest._id} />
                 <DeleteAction id={guest._id} />
+                <ViewInvitationAction id={guest._id} />
               </>
             );
           }}

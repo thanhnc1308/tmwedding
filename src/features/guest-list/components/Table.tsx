@@ -1,8 +1,13 @@
-import { PencilIcon } from '@heroicons/react/24/outline';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import {
+  PencilIcon,
+  TrashIcon,
+  CheckIcon,
+  ClockIcon,
+  MinusIcon,
+  EyeIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { DialogRouterIdentifier } from '@/types/dialog-router-identifier';
-import { CheckIcon, ClockIcon, MinusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { GuestConfirmationStatus } from '@/types/guest';
 
@@ -66,5 +71,19 @@ export function DeleteAction({ id }: { id: string }) {
         <TrashIcon className='w-5' />
       </Link>
     </>
+  );
+}
+
+export function ViewInvitationAction({ id }: { id: string }) {
+  return (
+    <a
+      href={`/invitation/${id}`}
+      target='_blank'
+      rel='noopener noreferrer'
+      className='rounded-md border p-2 hover:bg-gray-100'
+    >
+      <span className='sr-only'>View Invitation</span>
+      <EyeIcon className='w-5' />
+    </a>
   );
 }
