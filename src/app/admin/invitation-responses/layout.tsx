@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-
 export default function Layout({
   children,
   removeResponseDialog,
@@ -10,7 +8,7 @@ export default function Layout({
   return (
     <>
       {children}
-      <Suspense>{removeResponseDialog}</Suspense>
+      {removeResponseDialog}
     </>
   );
 }

@@ -18,10 +18,70 @@ import {
   GuestConfirmationStatus,
   GuestAgeComparison,
   GuestGender,
+  GuestSource,
 } from '@/types/guest';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Suspense } from 'react';
+
+const GUEST_LIST_COLUMNS: TableColumn<Guest>[] = [
+  {
+    key: 'name',
+    label: 'Name',
+    dataType: TableColumnDataType.String,
+    sortable: true,
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    dataType: TableColumnDataType.Custom,
+    getCustomCell: (guest: Guest) => {
+      return <Status status={guest.status} />;
+    },
+    filterable: true,
+    filterOptions: [
+      GuestConfirmationStatus.Pending,
+      GuestConfirmationStatus.Accepted,
+      GuestConfirmationStatus.Declined,
+    ],
+  },
+  {
+    key: 'memberCount',
+    label: 'Member Count',
+    dataType: TableColumnDataType.Number,
+  },
+  {
+    key: 'invited',
+    label: 'Invited',
+    dataType: TableColumnDataType.Boolean,
+    filterable: true,
+  },
+  {
+    key: 'guestSource',
+    label: 'Guest Source',
+    dataType: TableColumnDataType.String,
+    filterable: true,
+    filterOptions: [GuestSource.Groom, GuestSource.Bride],
+  },
+  {
+    key: 'ageComparison',
+    label: 'Age',
+    dataType: TableColumnDataType.String,
+    filterable: true,
+    filterOptions: [
+      GuestAgeComparison.Older,
+      GuestAgeComparison.Younger,
+      GuestAgeComparison.Same,
+    ],
+  },
+  {
+    key: 'gender',
+    label: 'Gender',
+    dataType: TableColumnDataType.String,
+    filterable: true,
+    filterOptions: [GuestGender.Male, GuestGender.Female],
+  },
+];
 
 export default async function GuestListPage(props: {
   // https://nextjs.org/docs/app/api-reference/file-conventions/page
@@ -38,70 +98,6 @@ export default async function GuestListPage(props: {
   const currentPage = Number(searchParams?.page) || 1;
   const rowsPerPage = Number(searchParams?.rowsPerPage) || 10;
 
-  const columns: TableColumn[] = [
-    {
-      key: 'name',
-      label: 'Name',
-      dataType: TableColumnDataType.String,
-      sortable: true,
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      dataType: TableColumnDataType.Custom,
-      getCustomCell: (row: unknown) => {
-        const guest = row as Guest;
-        const guestStatus = guest.status as string;
-        return <Status status={guestStatus} />;
-      },
-      filterable: true,
-      filterOptions: [
-        GuestConfirmationStatus.Pending,
-        GuestConfirmationStatus.Accepted,
-        GuestConfirmationStatus.Declined,
-      ],
-    },
-    {
-      key: 'memberCount',
-      label: 'Member Count',
-      dataType: TableColumnDataType.Number,
-    },
-    {
-      key: 'invited',
-      label: 'Invited',
-      dataType: TableColumnDataType.Boolean,
-      filterable: true,
-    },
-    {
-      key: 'guestSource',
-      label: 'Guest Source',
-      dataType: TableColumnDataType.String,
-      filterable: true,
-      filterOptions: [
-        GuestConfirmationStatus.Pending,
-        GuestConfirmationStatus.Accepted,
-      ],
-    },
-    {
-      key: 'ageComparison',
-      label: 'Age',
-      dataType: TableColumnDataType.String,
-      filterable: true,
-      filterOptions: [
-        GuestAgeComparison.Older,
-        GuestAgeComparison.Younger,
-        GuestAgeComparison.Same,
-      ],
-    },
-    {
-      key: 'gender',
-      label: 'Gender',
-      dataType: TableColumnDataType.String,
-      filterable: true,
-      filterOptions: [GuestGender.Male, GuestGender.Female],
-    },
-  ];
-
   const { data: rows, total } = await paginateGuestList({
     queryString: query,
     sortString: sort,
@@ -113,9 +109,7 @@ export default async function GuestListPage(props: {
     <div className='w-full px-5'>
       <div className='mt-4 flex items-center justify-end gap-2 md:mt-8'>
         <div className='w-100'>
-          <Suspense key='search'>
-            <Search placeholder='Search guest...' />
-          </Suspense>
+          <Search placeholder='Search guest...' />
         </div>
         <GuestImport />
         <Link
@@ -128,21 +122,18 @@ export default async function GuestListPage(props: {
       </div>
       <Suspense key={query + currentPage} fallback={<TableSkeletons />}>
         <Table
-          columns={columns}
+          columns={GUEST_LIST_COLUMNS}
           rows={rows}
           total={total}
           rowsPerPage={rowsPerPage}
           hasActionsColumn
-          getActions={(row: unknown) => {
-            const guest = row as Guest;
-            return (
-              <>
-                <UpdateAction id={guest._id} />
-                <DeleteAction id={guest._id} />
-                <ViewInvitationAction id={guest._id} />
-              </>
-            );
-          }}
+          getActions={(guest) => (
+            <>
+              <UpdateAction id={guest._id} />
+              <DeleteAction id={guest._id} />
+              <ViewInvitationAction id={guest._id} />
+            </>
+          )}
         />
       </Suspense>
     </div>

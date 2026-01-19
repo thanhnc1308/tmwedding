@@ -8,17 +8,19 @@ export enum TableColumnDataType {
   Custom = 'custom',
 }
 
-export type TableColumn = {
-  key: string;
+type BaseRow = { _id: string };
+
+export type TableColumn<T = unknown> = {
+  key: keyof T & string;
   label: string;
   dataType: TableColumnDataType;
-  getCustomCell?: (row: unknown, column: TableColumn) => React.ReactNode;
+  getCustomCell?: (row: T, column: TableColumn<T>) => React.ReactNode;
   filterable?: boolean;
   sortable?: boolean;
   filterOptions?: string[];
 };
 
-export default async function Table({
+export default async function Table<T extends BaseRow>({
   columns,
   rows,
   total,
@@ -26,13 +28,12 @@ export default async function Table({
   hasActionsColumn,
   getActions,
 }: {
-  columns: TableColumn[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rows: any[];
+  columns: TableColumn<T>[];
+  rows: T[];
   total: number;
   rowsPerPage: number;
   hasActionsColumn: boolean;
-  getActions?: (row: unknown) => React.ReactNode;
+  getActions?: (row: T) => React.ReactNode;
 }) {
   const totalPage = Math.ceil(total / rowsPerPage);
 
@@ -43,7 +44,7 @@ export default async function Table({
           <table className='hidden min-w-full text-gray-900 md:table'>
             <thead className='rounded-lg text-left text-sm font-normal'>
               <tr>
-                {columns.map((column: TableColumn) => {
+                {columns.map((column) => {
                   return (
                     <th
                       key={column.key}
@@ -124,7 +125,7 @@ export default async function Table({
                   key={row._id}
                   className='w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg'
                 >
-                  {columns.map((column: TableColumn) => {
+                  {columns.map((column) => {
                     // type custom
                     if (column.dataType === TableColumnDataType.Custom) {
                       return (
@@ -145,7 +146,9 @@ export default async function Table({
                           key={column.key}
                           className='whitespace-nowrap px-3 py-3'
                         >
-                          <CheckboxCell checked={row[column.key]} />
+                          <CheckboxCell
+                            checked={row[column.key] as boolean}
+                          />
                         </td>
                       );
                     }
@@ -157,7 +160,7 @@ export default async function Table({
                           key={column.key}
                           className='whitespace-nowrap px-3 py-3'
                         >
-                          {row[column.key]}
+                          {row[column.key] as React.ReactNode}
                         </td>
                       );
                     }
@@ -168,7 +171,7 @@ export default async function Table({
                         key={column.key}
                         className='whitespace-nowrap px-3 py-3'
                       >
-                        {row[column.key]}
+                        {row[column.key] as React.ReactNode}
                       </td>
                     );
                   })}
