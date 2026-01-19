@@ -64,7 +64,8 @@ export default function EventInfo({
           referrerPolicy='no-referrer-when-downgrade'
         ></iframe>
       ),
-      mapUrl: 'https://maps.app.goo.gl/NScbbGAmo5ALXQMf8',
+      mapUrl:
+        'https://www.google.com/maps/dir/?api=1&destination=20.747792,106.161506',
     },
     {
       id: '2',
@@ -85,7 +86,8 @@ export default function EventInfo({
           referrerPolicy='no-referrer-when-downgrade'
         ></iframe>
       ),
-      mapUrl: 'https://maps.app.goo.gl/NScbbGAmo5ALXQMf8',
+      mapUrl:
+        'https://www.google.com/maps/dir/?api=1&destination=20.747792,106.161506',
     },
   ],
   title = 'THÔNG TIN TIỆC CƯỚI',
