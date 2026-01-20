@@ -84,10 +84,13 @@ export default function InvitationResponse({
   const isKnownGuest = guest !== null;
   const guestPronoun = getGuestPronoun(guest);
 
+  const utils = trpc.useUtils();
+
   const submitMutation = trpc.invitation.submitResponse.useMutation({
     onSuccess: () => {
       setIsSubmitted(true);
       toast.success('Cảm ơn bạn đã phản hồi!');
+      utils.invitation.getResponses.invalidate();
       onSuccess?.();
     },
     onError: (error) => {
