@@ -3,6 +3,7 @@
 import { WEDDING_DATE } from '@/constants/wedding';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { COLORS, FONTS } from '../constants/design';
 
 interface SaveTheDateButtonProps {
   eventTitle?: string;
@@ -13,7 +14,7 @@ interface SaveTheDateButtonProps {
 }
 
 export default function SaveTheDateButton({
-  eventTitle = 'Cưới Thành Mến',
+  eventTitle = 'Đám Cưới Thành Mến',
   eventDescription = '',
   eventLocation = '',
   startDate = new Date(WEDDING_DATE),
@@ -75,23 +76,43 @@ export default function SaveTheDateButton({
 
   return (
     <Menu as='div' className='relative inline-block text-left'>
-      <MenuButton className='inline-flex items-center gap-2 bg-white/80 hover:bg-white border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-medium tracking-wider transition-all duration-300 hover:shadow-lg cursor-pointer'>
+      <MenuButton
+        className='inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium tracking-wider transition-all duration-300 cursor-pointer'
+        style={{
+          backgroundColor: `${COLORS.bgWhite}CC`,
+          border: `1px solid ${COLORS.borderGold}`,
+          color: COLORS.textPrimary,
+          fontFamily: FONTS.serif,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = COLORS.bgWhite;
+          e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = `${COLORS.bgWhite}CC`;
+          e.currentTarget.style.boxShadow = 'none';
+        }}
+      >
         Thêm vào lịch
         <ChevronDownIcon className='h-5 w-5' />
       </MenuButton>
 
       <MenuItems
         transition
-        className='absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in z-10'
+        className='absolute right-0 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in z-10'
+        style={{ backgroundColor: COLORS.bgWhite }}
       >
         <div className='py-1'>
           <MenuItem>
             {({ focus }) => (
               <button
                 onClick={handleGoogleCalendar}
-                className={`${
-                  focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                } group flex w-full items-center px-4 py-2 text-sm cursor-pointer`}
+                className='group flex w-full items-center px-4 py-2 text-sm cursor-pointer'
+                style={{
+                  backgroundColor: focus ? COLORS.bgCream : 'transparent',
+                  color: COLORS.textPrimary,
+                  fontFamily: FONTS.serif,
+                }}
               >
                 <svg className='mr-3 h-5 w-5' viewBox='0 0 24 24' fill='none'>
                   <path
@@ -119,13 +140,16 @@ export default function SaveTheDateButton({
             {({ focus }) => (
               <button
                 onClick={handleAppleCalendar}
-                className={`${
-                  focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                } group flex w-full items-center px-4 py-2 text-sm cursor-pointer`}
+                className='group flex w-full items-center px-4 py-2 text-sm cursor-pointer'
+                style={{
+                  backgroundColor: focus ? COLORS.bgCream : 'transparent',
+                  color: COLORS.textPrimary,
+                  fontFamily: FONTS.serif,
+                }}
               >
                 <svg
-                  className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                  fill='currentColor'
+                  className='mr-3 h-5 w-5'
+                  fill={COLORS.textSecondary}
                   viewBox='0 0 24 24'
                 >
                   <path d='M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z' />

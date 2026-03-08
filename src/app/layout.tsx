@@ -1,9 +1,15 @@
-import { Geist, Geist_Mono, Allison } from 'next/font/google';
+import {
+  Geist,
+  Geist_Mono,
+  Allison,
+  Cormorant_Garamond,
+} from 'next/font/google';
 import './globals.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import { TRPCProvider } from '@/providers/TRPCProvider';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -21,6 +27,14 @@ const allison = Allison({
   display: 'swap',
 });
 
+const cormorantGaramond = Cormorant_Garamond({
+  variable: '--font-cormorant',
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${allison} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${allison} ${cormorantGaramond.variable} antialiased`}
         suppressHydrationWarning
       >
         <AppRouterCacheProvider>
@@ -37,6 +51,7 @@ export default function RootLayout({
             <ThemeProvider theme={theme}>{children}</ThemeProvider>
           </TRPCProvider>
         </AppRouterCacheProvider>
+        <Toaster position='top-right' />
       </body>
     </html>
   );

@@ -7,13 +7,17 @@ import {
   Dialog,
   DialogContent,
   IconButton,
-  Grid,
-  Card,
-  CardMedia,
   Container,
 } from '@mui/material';
 import { Close, ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import Image from 'next/image';
+import {
+  COLORS,
+  FONTS,
+  TRANSITIONS,
+  sectionHeadingStyle,
+} from '../constants/design';
+import ScrollReveal from './ScrollReveal';
 
 interface WeddingPhoto {
   id: string;
@@ -26,7 +30,6 @@ interface WeddingPhoto {
 
 interface PhotoGalleryProps {
   photos?: WeddingPhoto[];
-  columns?: { xs: number; sm: number; md: number; lg: number };
 }
 
 export default function PhotoGallery({
@@ -56,7 +59,6 @@ export default function PhotoGallery({
       description: "The bride's grand entrance",
     },
   ],
-  columns = { xs: 1, sm: 2, md: 3, lg: 4 },
 }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<WeddingPhoto | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,124 +86,100 @@ export default function PhotoGallery({
 
   return (
     <Box
+      id='gallery'
       sx={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%)',
-        py: 6,
+        py: { xs: 8, md: 12 },
+        backgroundColor: COLORS.bgWhite,
       }}
     >
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
         {/* Header */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography
-            variant='h2'
-            component='h1'
+        <ScrollReveal>
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
+              Một số khoảnh khắc của chúng mình
+            </Typography>
+          </Box>
+        </ScrollReveal>
+
+        {/* Masonry Grid */}
+        <ScrollReveal delay={0.2}>
+          <Box
             sx={{
-              fontFamily: "'Dancing Script', cursive",
-              color: '#6b7280',
-              fontWeight: 700,
-              mb: 2,
-              fontSize: { xs: '3rem', md: '4rem' },
+              columnCount: { xs: 1, sm: 2, md: 3 },
+              columnGap: '16px',
             }}
           >
-            Một số khoảnh khắc của chúng mình
-          </Typography>
-        </Box>
-
-        {/* Photo Grid */}
-        <Box
-          sx={{
-            opacity: 1,
-            transform: 'translateY(0)',
-            transition: 'all 0.6s ease-in-out',
-            animation: 'fadeInUp 0.8s ease-out',
-            '@keyframes fadeInUp': {
-              '0%': {
-                opacity: 0,
-                transform: 'translateY(30px)',
-              },
-              '100%': {
-                opacity: 1,
-                transform: 'translateY(0)',
-              },
-            },
-          }}
-        >
-          <Grid container spacing={3}>
             {photos.map((photo, index) => (
-              <Grid
-                size={{
-                  xs: columns.xs,
-                  sm: columns.sm,
-                  md: columns.md,
-                  lg: columns.lg,
-                }}
+              <Box
                 key={photo.id}
+                sx={{
+                  breakInside: 'avoid',
+                  mb: 2,
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  transition: `all ${TRANSITIONS.normal} ease`,
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 12px 28px rgba(0,0,0,0.1)',
+                  },
+                  '&:hover .photo-overlay': {
+                    opacity: 1,
+                  },
+                }}
+                onClick={() => handlePhotoClick(photo, index)}
               >
-                <Card
-                  sx={{
-                    position: 'relative',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-                    },
+                <Image
+                  src={photo.thumbnailUrl}
+                  alt={photo.alt}
+                  width={600}
+                  height={index % 3 === 0 ? 700 : index % 3 === 1 ? 500 : 600}
+                  loading='lazy'
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
                   }}
-                  onClick={() => handlePhotoClick(photo, index)}
-                >
-                  <CardMedia
-                    component='img'
-                    height='250'
-                    image={photo.thumbnailUrl}
-                    alt={photo.alt}
-                    sx={{
-                      transition: 'transform 0.3s ease',
-                      '&:hover': {
-                        transform: 'scale(1.05)',
-                      },
-                    }}
-                  />
+                />
 
-                  {/* Overlay */}
-                  <Box
+                {/* Overlay */}
+                <Box
+                  className='photo-overlay'
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background:
+                      'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    p: 2.5,
+                    opacity: 0,
+                    transition: `opacity ${TRANSITIONS.normal} ease`,
+                  }}
+                >
+                  <Typography
+                    variant='h6'
                     sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background:
-                        'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end',
-                      p: 2,
-                      opacity: 0,
-                      transition: 'opacity 0.3s ease',
-                      '&:hover': {
-                        opacity: 1,
-                      },
+                      color: 'white',
+                      fontWeight: 600,
+                      fontFamily: FONTS.serif,
+                      mb: 0.5,
                     }}
                   >
-                    <Typography
-                      variant='h6'
-                      sx={{
-                        color: 'white',
-                        fontWeight: 600,
-                        mb: 0.5,
-                      }}
-                    >
-                      {photo.title}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
+                    {photo.title}
+                  </Typography>
+                </Box>
+              </Box>
             ))}
-          </Grid>
-        </Box>
+          </Box>
+        </ScrollReveal>
 
         {/* Lightbox Dialog */}
         <Dialog
@@ -230,9 +208,9 @@ export default function PhotoGallery({
           >
             {selectedPhoto && (
               <>
-                {/* Close Button */}
                 <IconButton
                   onClick={handleCloseDialog}
+                  aria-label='Close photo viewer'
                   sx={{
                     position: 'absolute',
                     top: 20,
@@ -248,9 +226,9 @@ export default function PhotoGallery({
                   <Close />
                 </IconButton>
 
-                {/* Previous Button */}
                 <IconButton
                   onClick={handlePrevious}
+                  aria-label='Previous photo'
                   sx={{
                     position: 'absolute',
                     left: 20,
@@ -267,9 +245,9 @@ export default function PhotoGallery({
                   <ArrowBackIos />
                 </IconButton>
 
-                {/* Next Button */}
                 <IconButton
                   onClick={handleNext}
+                  aria-label='Next photo'
                   sx={{
                     position: 'absolute',
                     right: 20,
@@ -286,7 +264,6 @@ export default function PhotoGallery({
                   <ArrowForwardIos />
                 </IconButton>
 
-                {/* Main Image */}
                 <Box
                   sx={{
                     display: 'flex',
@@ -309,7 +286,6 @@ export default function PhotoGallery({
                     }}
                   />
 
-                  {/* Photo Info */}
                   <Box
                     sx={{
                       mt: 2,
@@ -322,7 +298,7 @@ export default function PhotoGallery({
                     <Typography
                       variant='h5'
                       sx={{
-                        fontFamily: "'Dancing Script', cursive",
+                        fontFamily: FONTS.script,
                         fontWeight: 600,
                         mb: 1,
                       }}
@@ -336,6 +312,7 @@ export default function PhotoGallery({
                           color: 'rgba(255,255,255,0.8)',
                           mb: 2,
                           lineHeight: 1.6,
+                          fontFamily: FONTS.serif,
                         }}
                       >
                         {selectedPhoto.description}

@@ -3,6 +3,7 @@ import CountdownTimer from './CountdownTimer';
 import { formatDisplayDate } from '@/utils/date';
 import SaveTheDateButton from './SaveTheDateButton';
 import { BRIDE_NAME, GROOM_NAME, WEDDING_DATE } from '@/constants/wedding';
+import { COLORS, FONTS } from '../constants/design';
 
 const dancingScript = Dancing_Script({
   variable: '--font-dancing-script',
@@ -31,33 +32,92 @@ export default function WeddingBanner({
           backgroundImage: `url('${backgroundImage}')`,
         }}
       >
-        <div className='absolute inset-0 bg-white/40' />
+        <div
+          className='absolute inset-0'
+          style={{
+            background: `linear-gradient(to bottom, ${COLORS.bgCream}33 0%, ${COLORS.bgCream}4D 50%, ${COLORS.bgCream}80 100%)`,
+          }}
+        />
       </div>
 
       {/* Main Content */}
       <div className='relative z-10 flex flex-col items-center justify-center min-h-screen px-4'>
+        {/* Subtitle */}
+        <p
+          className='text-sm tracking-[0.3em] uppercase mb-6'
+          style={{
+            fontFamily: FONTS.serif,
+            color: COLORS.textSecondary,
+            fontWeight: 500,
+          }}
+        >
+          Dám cưới
+        </p>
+
         {/* Names */}
-        <div className='text-center mb-8'>
+        <div className='text-center mb-6'>
           <h1
-            style={{ fontFamily: dancingScript.style.fontFamily }}
-            className={`text-6xl md:text-7xl lg:text-8xl font-script text-gray-700 mb-4`}
+            className='text-6xl md:text-7xl lg:text-8xl mb-4'
+            style={{
+              fontFamily: dancingScript.style.fontFamily,
+              color: COLORS.primary,
+            }}
           >
-            {GROOM_NAME} & {BRIDE_NAME}
+            {GROOM_NAME}
+            <span
+              style={{
+                color: COLORS.accent,
+                margin: '0 0.3em',
+                fontSize: '0.6em',
+                fontWeight: 400,
+              }}
+            >
+              &amp;
+            </span>
+            {BRIDE_NAME}
           </h1>
 
-          {/* Heart Fingerprint */}
-          <div className='flex justify-center mb-6'>
-            <div className='w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center'>
-              <svg viewBox='0 0 24 24' className='w-10 h-10 fill-white'>
-                <path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' />
-              </svg>
-            </div>
+          {/* Ornamental line */}
+          <div className='flex items-center justify-center gap-3 mb-4'>
+            <div
+              className='h-px w-16'
+              style={{
+                background: `linear-gradient(to right, transparent, ${COLORS.accent})`,
+              }}
+            />
+            <svg
+              width='12'
+              height='12'
+              viewBox='0 0 16 16'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M8 0L9.8 6.2L16 8L9.8 9.8L8 16L6.2 9.8L0 8L6.2 6.2L8 0Z'
+                fill={COLORS.accent}
+                opacity='0.7'
+              />
+            </svg>
+            <div
+              className='h-px w-16'
+              style={{
+                background: `linear-gradient(to left, transparent, ${COLORS.accent})`,
+              }}
+            />
           </div>
         </div>
 
         {/* Date */}
-        <div className='text-center mb-6'>
-          <p className='text-xl text-gray-600 font-light tracking-wider'>
+        <div className='text-center mb-8'>
+          <p
+            style={{
+              fontFamily: FONTS.serif,
+              color: COLORS.textPrimary,
+              fontWeight: 500,
+              letterSpacing: '0.2em',
+              fontSize: '1.15rem',
+            }}
+          >
             {formatDisplayDate(WEDDING_DATE)}
           </p>
         </div>
@@ -65,7 +125,17 @@ export default function WeddingBanner({
         {/* Quote */}
         {quote && (
           <div className='text-center mb-12 max-w-md'>
-            <p className='text-gray-600 italic mb-2'>&quot;{quote}&quot;</p>
+            <p
+              style={{
+                fontFamily: FONTS.serif,
+                color: COLORS.textSecondary,
+                fontStyle: 'italic',
+                fontSize: '1.05rem',
+                lineHeight: 1.7,
+              }}
+            >
+              &quot;{quote}&quot;
+            </p>
           </div>
         )}
 

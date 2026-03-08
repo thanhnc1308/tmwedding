@@ -2,31 +2,17 @@
 
 import { Box, Typography, Container, Tooltip } from '@mui/material';
 import { Favorite } from '@mui/icons-material';
+import { COLORS, FONTS } from '../constants/design';
 
-interface FooterProps {
-  backgroundColor?: string;
-  textColor?: string;
-  heartColor?: string;
-  showBackground?: boolean;
-}
-
-export default function Footer({
-  backgroundColor = 'rgba(255, 255, 255, 0.9)',
-  textColor = '#6b7280',
-  heartColor = '#ff6b6b',
-  showBackground = true,
-}: FooterProps) {
+export default function Footer() {
   return (
     <Box
       component='footer'
       sx={{
         py: 4,
-        mt: 6,
-        backgroundColor: showBackground ? backgroundColor : 'transparent',
-        backdropFilter: showBackground ? 'blur(10px)' : 'none',
-        borderTop: showBackground
-          ? '1px solid rgba(107, 114, 128, 0.1)'
-          : 'none',
+        mt: 0,
+        backgroundColor: COLORS.bgCream,
+        borderTop: `1px solid ${COLORS.borderGold}`,
         position: 'relative',
       }}
     >
@@ -37,8 +23,8 @@ export default function Footer({
             variant='h5'
             component='p'
             sx={{
-              fontFamily: "'Dancing Script', cursive",
-              color: textColor,
+              fontFamily: FONTS.script,
+              color: COLORS.primary,
               fontWeight: 600,
               mb: 3,
               fontSize: { xs: '1.5rem', md: '2rem' },
@@ -53,9 +39,10 @@ export default function Footer({
             variant='body1'
             component='p'
             sx={{
-              color: textColor,
+              color: COLORS.textSecondary,
               fontSize: { xs: '0.9rem', md: '1rem' },
               fontWeight: 400,
+              fontFamily: FONTS.serif,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -65,36 +52,20 @@ export default function Footer({
             }}
           >
             Made by{' '}
-            <Tooltip
-              title='and lots of help from AI :v'
-              arrow
-              placement='top'
-              sx={{
-                '& .MuiTooltip-tooltip': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  borderRadius: 1,
-                  padding: '8px 12px',
-                },
-                '& .MuiTooltip-arrow': {
-                  color: 'rgba(0, 0, 0, 0.8)',
-                },
-              }}
-            >
+            <Tooltip title='and lots of help from AI :v' arrow placement='top'>
               <Box
                 component='span'
                 sx={{
                   fontWeight: 600,
-                  color: textColor,
+                  color: COLORS.textSecondary,
                   cursor: 'help',
                   textDecoration: 'underline',
                   textDecorationStyle: 'dotted',
                   textUnderlineOffset: '3px',
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.25s ease',
                   '&:hover': {
-                    color: heartColor,
-                    textDecorationColor: heartColor,
+                    color: COLORS.heartRed,
+                    textDecorationColor: COLORS.heartRed,
                   },
                 }}
               >
@@ -104,25 +75,15 @@ export default function Footer({
             with lots of{' '}
             <Favorite
               sx={{
-                color: heartColor,
+                color: COLORS.heartRed,
                 fontSize: '1.2rem',
-                animation: 'heartbeat 2s ease-in-out infinite',
+                animation: 'heartbeat 3s ease-in-out infinite',
                 '@keyframes heartbeat': {
-                  '0%': {
-                    transform: 'scale(1)',
-                  },
-                  '14%': {
-                    transform: 'scale(1.1)',
-                  },
-                  '28%': {
-                    transform: 'scale(1)',
-                  },
-                  '42%': {
-                    transform: 'scale(1.1)',
-                  },
-                  '70%': {
-                    transform: 'scale(1)',
-                  },
+                  '0%': { transform: 'scale(1)' },
+                  '14%': { transform: 'scale(1.08)' },
+                  '28%': { transform: 'scale(1)' },
+                  '42%': { transform: 'scale(1.08)' },
+                  '70%': { transform: 'scale(1)' },
                 },
               }}
             />{' '}
@@ -131,8 +92,8 @@ export default function Footer({
               component='span'
               sx={{
                 fontWeight: 600,
-                color: heartColor,
-                fontFamily: "'Dancing Script', cursive",
+                color: COLORS.heartRed,
+                fontFamily: FONTS.script,
                 fontSize: '1.1em',
               }}
             >
@@ -147,24 +108,20 @@ export default function Footer({
               display: 'flex',
               justifyContent: 'center',
               gap: 2,
-              opacity: 0.6,
+              opacity: 0.5,
             }}
           >
             {[...Array(3)].map((_, index) => (
               <Favorite
                 key={index}
                 sx={{
-                  color: heartColor,
+                  color: COLORS.heartRed,
                   fontSize: '0.8rem',
-                  animation: `float ${2 + index * 0.5}s ease-in-out infinite`,
-                  animationDelay: `${index * 0.3}s`,
+                  animation: `float ${3 + index * 0.8}s ease-in-out infinite`,
+                  animationDelay: `${index * 0.5}s`,
                   '@keyframes float': {
-                    '0%, 100%': {
-                      transform: 'translateY(0px)',
-                    },
-                    '50%': {
-                      transform: 'translateY(-5px)',
-                    },
+                    '0%, 100%': { transform: 'translateY(0px)' },
+                    '50%': { transform: 'translateY(-4px)' },
                   },
                 }}
               />

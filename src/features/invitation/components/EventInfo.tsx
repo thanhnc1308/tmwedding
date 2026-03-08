@@ -19,6 +19,14 @@ import {
   Restaurant,
 } from '@mui/icons-material';
 import { months, weekdays } from '../constants';
+import {
+  COLORS,
+  FONTS,
+  cardStyle,
+  primaryButtonStyle,
+  sectionHeadingStyle,
+} from '../constants/design';
+import ScrollReveal from './ScrollReveal';
 
 interface WeddingEvent {
   id: string;
@@ -56,8 +64,8 @@ export default function EventInfo({
       embededIframe: (
         <iframe
           src='https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1758.7968663738109!2d106.16060564240412!3d20.74799579667959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1768564635080!5m2!1sen!2s'
-          width='600'
-          height='450'
+          width='100%'
+          height='100%'
           style={{ border: 0 }}
           allowFullScreen
           loading='lazy'
@@ -78,8 +86,8 @@ export default function EventInfo({
       embededIframe: (
         <iframe
           src='https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1758.7968663738109!2d106.171451!3d20.661624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1768564635080!5m2!1sen!2s'
-          width='600'
-          height='450'
+          width='100%'
+          height='100%'
           style={{ border: 0 }}
           allowFullScreen
           loading='lazy'
@@ -90,7 +98,7 @@ export default function EventInfo({
         'https://www.google.com/maps/dir/?api=1&destination=20.661624,106.171451',
     },
   ],
-  title = 'THÔNG TIN TIỆC CƯỚI',
+  title = 'Thông Tin Sự Kiện',
   backgroundImage = '/images/wedding-bg.JPG',
 }: EventInfoProps) {
   const handleDirections = (address: string, mapUrl?: string) => {
@@ -113,8 +121,6 @@ export default function EventInfo({
       Number.parseInt(day),
     );
 
-    // Use consistent formatting to avoid hydration issues
-
     const weekday = weekdays[date.getDay()];
     const dayNum = date.getDate();
     const monthName = months[date.getMonth()];
@@ -125,16 +131,16 @@ export default function EventInfo({
 
   return (
     <Box
+      id='event'
       sx={{
         position: 'relative',
-        minHeight: '100vh',
         backgroundImage: `url('${backgroundImage}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         display: 'flex',
         alignItems: 'center',
-        py: 8,
+        py: { xs: 8, md: 12 },
       }}
     >
       {/* Background Overlay */}
@@ -142,179 +148,193 @@ export default function EventInfo({
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          backgroundColor: COLORS.overlayLight,
           backdropFilter: 'blur(2px)',
         }}
       />
 
       <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1 }}>
         {/* Header */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography
-            variant='h2'
-            component='h1'
-            sx={{
-              fontFamily: "'Dancing Script', cursive",
-              color: '#8b4513',
-              fontWeight: 700,
-              mb: 2,
-              fontSize: { xs: '2.5rem', md: '3.5rem' },
-              textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
-            }}
-          >
-            {title}
-          </Typography>
-        </Box>
+        <ScrollReveal>
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
+              {title}
+            </Typography>
+          </Box>
+        </ScrollReveal>
 
         {/* Events Grid */}
         <Grid container spacing={4}>
-          {events.map((event) => (
+          {events.map((event, index) => (
             <Grid size={{ xs: 12, md: 6 }} key={event.id}>
-              <Card
-                sx={{
-                  height: '100%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                  backdropFilter: 'blur(10px)',
-                  borderRadius: 3,
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: '0 16px 48px rgba(0, 0, 0, 0.15)',
-                  },
-                }}
-              >
-                <CardContent sx={{ p: 4 }}>
-                  {/* Event Type Badge */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      mb: 3,
-                    }}
-                  >
-                    <Chip
-                      icon={
-                        event.type === 'ceremony' ? <Event /> : <Restaurant />
-                      }
-                      label={
-                        event.type === 'ceremony' ? 'LỄ THÀNH HÔN' : 'TIỆC CƯỚI'
-                      }
-                      sx={{
-                        backgroundColor:
-                          event.type === 'ceremony' ? '#e8f5e8' : '#fff3e0',
-                        color:
-                          event.type === 'ceremony' ? '#2e7d32' : '#f57c00',
-                        fontWeight: 600,
-                        fontSize: '0.75rem',
-                      }}
-                    />
-                  </Box>
-
-                  {/* Event Title */}
-                  <Typography
-                    variant='h4'
-                    component='h3'
-                    sx={{
-                      fontFamily: "'Dancing Script', cursive",
-                      color: '#8b4513',
-                      fontWeight: 700,
-                      mb: 2,
-                      fontSize: { xs: '1.8rem', md: '2.2rem' },
-                    }}
-                  >
-                    {event.title}
-                  </Typography>
-
-                  {/* Date and Time */}
-                  <Box sx={{ mb: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Event sx={{ color: '#8b4513', mr: 1, fontSize: 20 }} />
-                      <Typography
-                        variant='body1'
-                        sx={{ color: '#5d4037', fontWeight: 600 }}
-                      >
-                        {formatDate(event.date)}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 3 }}>
-                      <AccessTime
-                        sx={{ color: '#8b4513', mr: 1, fontSize: 18 }}
-                      />
-                      <Typography variant='body2' sx={{ color: '#6b4423' }}>
-                        {event.time}
-                      </Typography>
-                    </Box>
-                  </Box>
-
-                  <Divider
-                    sx={{ my: 2, borderColor: 'rgba(139, 69, 19, 0.2)' }}
-                  />
-
-                  {/* Venue Information */}
-                  <Box sx={{ mb: 3 }}>
-                    <Typography
-                      variant='h6'
-                      sx={{
-                        color: '#8b4513',
-                        fontWeight: 600,
-                        mb: 1,
-                        fontSize: '1.1rem',
-                      }}
-                    >
-                      {event.venue}
-                    </Typography>
+              <ScrollReveal delay={index * 0.2}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    ...cardStyle,
+                  }}
+                >
+                  <CardContent sx={{ p: 4 }}>
+                    {/* Event Type Badge */}
                     <Box
-                      sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        mb: 3,
+                      }}
                     >
-                      <LocationOn
-                        sx={{ color: '#8b4513', mr: 1, fontSize: 20, mt: 0.2 }}
-                      />
-                      <Typography
-                        variant='body2'
+                      <Chip
+                        icon={
+                          event.type === 'ceremony' ? <Event /> : <Restaurant />
+                        }
+                        label={
+                          event.type === 'ceremony'
+                            ? 'LỄ THÀNH HÔN'
+                            : 'TIỆC CƯỚI'
+                        }
                         sx={{
-                          color: '#6b4423',
-                          lineHeight: 1.5,
-                          flex: 1,
+                          backgroundColor:
+                            event.type === 'ceremony'
+                              ? `${COLORS.primary}14`
+                              : `${COLORS.accent}1A`,
+                          color:
+                            event.type === 'ceremony'
+                              ? COLORS.primary
+                              : COLORS.accentDark,
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          fontFamily: FONTS.serif,
+                        }}
+                      />
+                    </Box>
+
+                    {/* Event Title */}
+                    <Typography
+                      variant='h4'
+                      component='h3'
+                      sx={{
+                        fontFamily: FONTS.script,
+                        color: COLORS.primary,
+                        fontWeight: 700,
+                        mb: 2,
+                        fontSize: { xs: '1.8rem', md: '2.2rem' },
+                      }}
+                    >
+                      {event.title}
+                    </Typography>
+
+                    {/* Date and Time */}
+                    <Box sx={{ mb: 3 }}>
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
+                      >
+                        <Event
+                          sx={{ color: COLORS.primary, mr: 1, fontSize: 20 }}
+                        />
+                        <Typography
+                          variant='body1'
+                          sx={{
+                            color: COLORS.textPrimary,
+                            fontWeight: 600,
+                            fontFamily: FONTS.serif,
+                          }}
+                        >
+                          {formatDate(event.date)}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', ml: 3 }}
+                      >
+                        <AccessTime
+                          sx={{ color: COLORS.primary, mr: 1, fontSize: 18 }}
+                        />
+                        <Typography
+                          variant='body2'
+                          sx={{
+                            color: COLORS.textSecondary,
+                            fontFamily: FONTS.serif,
+                          }}
+                        >
+                          {event.time}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Divider sx={{ my: 2, borderColor: COLORS.borderGold }} />
+
+                    {/* Venue Information */}
+                    <Box sx={{ mb: 3 }}>
+                      <Typography
+                        variant='h6'
+                        sx={{
+                          color: COLORS.primary,
+                          fontWeight: 600,
+                          mb: 1,
+                          fontSize: '1.1rem',
+                          fontFamily: FONTS.serif,
                         }}
                       >
-                        {event.address}
+                        {event.venue}
                       </Typography>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          mb: 2,
+                        }}
+                      >
+                        <LocationOn
+                          sx={{
+                            color: COLORS.primary,
+                            mr: 1,
+                            fontSize: 20,
+                            mt: 0.2,
+                          }}
+                        />
+                        <Typography
+                          variant='body2'
+                          sx={{
+                            color: COLORS.textSecondary,
+                            lineHeight: 1.5,
+                            flex: 1,
+                            fontFamily: FONTS.serif,
+                          }}
+                        >
+                          {event.address}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
 
-                  {event.embededIframe}
+                    {/* Responsive Map */}
+                    <Box
+                      sx={{
+                        width: '100%',
+                        aspectRatio: '4 / 3',
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                        mb: 2,
+                        border: `1px solid ${COLORS.borderGold}`,
+                      }}
+                    >
+                      {event.embededIframe}
+                    </Box>
 
-                  {/* Directions Button */}
-                  <Button
-                    variant='contained'
-                    startIcon={<Directions />}
-                    onClick={() =>
-                      handleDirections(event.address, event.mapUrl)
-                    }
-                    fullWidth
-                    sx={{
-                      backgroundColor: '#8b4513',
-                      color: 'white',
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontWeight: 600,
-                      textTransform: 'none',
-                      fontSize: '0.9rem',
-                      '&:hover': {
-                        backgroundColor: '#6b4423',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 6px 20px rgba(139, 69, 19, 0.3)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    Xem đường đi
-                  </Button>
-                </CardContent>
-              </Card>
+                    {/* Directions Button */}
+                    <Button
+                      variant='contained'
+                      startIcon={<Directions />}
+                      onClick={() =>
+                        handleDirections(event.address, event.mapUrl)
+                      }
+                      fullWidth
+                      sx={primaryButtonStyle}
+                    >
+                      Xem đường đi
+                    </Button>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
             </Grid>
           ))}
         </Grid>
