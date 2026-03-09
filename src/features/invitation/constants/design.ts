@@ -1,61 +1,76 @@
-// Consolidated wedding invitation design tokens
-// Palette: Refined warm brown + antique gold — elegant Vietnamese wedding
+// Hội An Lanterns — Warm & Whimsical wedding invitation design tokens
+// Palette: Deep navy night sky + warm amber/coral lantern glow
 export const COLORS = {
-  // Primary - rich walnut brown
-  primary: '#6B4C3B',
-  primaryLight: '#8D6E5D',
-  primaryDark: '#4E3629',
+  // Primary - deep navy
+  primary: '#1A1A2E',
+  primaryLight: '#2D2D4E',
+  primaryDark: '#0F0F1E',
 
-  // Accent - antique gold
-  accent: '#B8963B',
-  accentLight: '#D4B262',
-  accentDark: '#967726',
+  // Accent - warm amber
+  accent: '#E8A838',
+  accentLight: '#F0C060',
+  accentDark: '#C88A20',
+
+  // Secondary - soft coral
+  coral: '#E07A5F',
+  coralLight: '#E89A85',
+  coralDark: '#C45D42',
 
   // Text
-  textPrimary: '#3B2E26',
-  textSecondary: '#857468',
-  textOnPrimary: '#FFFDF9',
+  textPrimary: '#FFF8ED',
+  textSecondary: 'rgba(255, 248, 237, 0.7)',
+  textOnPrimary: '#1A1A2E',
+  textDark: '#2D2D2D',
 
   // Backgrounds
-  bgCream: '#FAF7F2',
-  bgWarm: '#F0EAE0',
+  bgCream: '#FFF8ED',
+  bgWarm: '#1A1A2E',
   bgWhite: '#FEFDFB',
+  bgNavy: '#1A1A2E',
+  bgNavyLight: '#232342',
+  bgCard: 'rgba(255, 248, 237, 0.06)',
 
-  // Envelope
-  envelopeGradientStart: '#B44040',
-  envelopeGradientMid: '#C85050',
-  envelopeGradientEnd: '#A63636',
+  // Envelope - warm lantern tones
+  envelopeGradientStart: '#1A1A2E',
+  envelopeGradientMid: '#2D2D4E',
+  envelopeGradientEnd: '#0F0F1E',
 
   // Decorative
-  gold: '#C9A84C',
-  goldLight: '#E0C878',
-  heartRed: '#D45B68',
+  gold: '#E8A838',
+  goldLight: '#F0C060',
+  heartRed: '#E07A5F',
+  lanternRed: '#D64545',
 
   // Borders & overlays
-  borderGold: 'rgba(184, 150, 59, 0.15)',
-  borderGoldHover: 'rgba(184, 150, 59, 0.3)',
-  overlayLight: 'rgba(250, 247, 242, 0.88)',
-  overlayDark: 'rgba(59, 46, 38, 0.06)',
+  borderGold: 'rgba(232, 168, 56, 0.2)',
+  borderGoldHover: 'rgba(232, 168, 56, 0.4)',
+  overlayLight: 'rgba(26, 26, 46, 0.85)',
+  overlayDark: 'rgba(0, 0, 0, 0.3)',
+
+  // Glow effects
+  glowAmber: '0 0 30px rgba(232, 168, 56, 0.15), 0 0 60px rgba(232, 168, 56, 0.05)',
+  glowCoral: '0 0 30px rgba(224, 122, 95, 0.15), 0 0 60px rgba(224, 122, 95, 0.05)',
+  glowWarm: '0 4px 30px rgba(232, 168, 56, 0.12)',
 } as const;
 
 export const FONTS = {
-  script: "'Dancing Script', cursive",
-  serif: "'Cormorant Garamond', serif",
-  body: "'Cormorant Garamond', serif",
-  handwritten: "'Kalam', cursive",
-  display: "'Allison', cursive",
+  script: "'Sacramento', cursive",
+  serif: "'Libre Baskerville', serif",
+  body: "'Quicksand', sans-serif",
+  handwritten: "'Sacramento', cursive",
+  display: "'Sacramento', cursive",
 } as const;
 
 // Shared animation durations
 export const TRANSITIONS = {
   fast: '150ms',
-  normal: '250ms',
+  normal: '300ms',
   slow: '500ms',
   reveal: '800ms',
 } as const;
 
-// Shared section styles
-export const sectionStyle = (bg: string = COLORS.bgCream) =>
+// Shared section styles — dark background with warm glow
+export const sectionStyle = (bg: string = COLORS.bgNavy) =>
   ({
     py: { xs: 8, md: 12 },
     px: 3,
@@ -63,45 +78,46 @@ export const sectionStyle = (bg: string = COLORS.bgCream) =>
     position: 'relative' as const,
   }) as const;
 
-// Shared card styles
+// Shared card styles — lantern card with warm inner glow
 export const cardStyle = {
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(10px)',
-  borderRadius: 3,
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06)',
+  backgroundColor: COLORS.bgCard,
+  backdropFilter: 'blur(12px)',
+  borderRadius: 4,
+  boxShadow: COLORS.glowAmber,
   border: `1px solid ${COLORS.borderGold}`,
   transition: `all ${TRANSITIONS.normal} ease`,
   '&:hover': {
     transform: 'translateY(-4px)',
-    boxShadow: '0 16px 48px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 8px 40px rgba(232, 168, 56, 0.2), 0 0 80px rgba(232, 168, 56, 0.08)',
     borderColor: COLORS.borderGoldHover,
   },
 } as const;
 
-// Shared button styles
+// Shared button styles — warm amber
 export const primaryButtonStyle = {
-  backgroundColor: COLORS.primary,
+  backgroundColor: COLORS.accent,
   color: COLORS.textOnPrimary,
-  borderRadius: 2,
+  borderRadius: 3,
   py: 1.5,
   fontWeight: 600,
   textTransform: 'none' as const,
   fontSize: '0.9rem',
-  fontFamily: FONTS.serif,
-  boxShadow: '0 4px 12px rgba(107, 76, 59, 0.25)',
+  fontFamily: FONTS.body,
+  boxShadow: '0 4px 16px rgba(232, 168, 56, 0.3)',
   '&:hover': {
-    backgroundColor: COLORS.primaryDark,
+    backgroundColor: COLORS.accentDark,
     transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(107, 76, 59, 0.35)',
+    boxShadow: '0 6px 24px rgba(232, 168, 56, 0.4)',
   },
   transition: `all ${TRANSITIONS.normal} ease`,
 } as const;
 
-// Section heading style
+// Section heading style — warm glowing script
 export const sectionHeadingStyle = {
   fontFamily: FONTS.script,
-  color: COLORS.primary,
-  fontWeight: 700,
+  color: COLORS.accent,
+  fontWeight: 400,
   mb: 2,
-  fontSize: { xs: '2.5rem', md: '3.5rem' },
+  fontSize: { xs: '2.8rem', md: '3.8rem' },
+  textShadow: '0 0 40px rgba(232, 168, 56, 0.3)',
 } as const;

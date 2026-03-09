@@ -52,9 +52,10 @@ export default function Navigation({
         display: 'flex',
         justifyContent: 'center',
         paddingTop: isSticky ? '0' : '2rem',
-        backgroundColor: isSticky ? `${COLORS.bgCream}EB` : 'transparent',
+        backgroundColor: isSticky ? `${COLORS.primaryDark}F0` : 'transparent',
         backdropFilter: isSticky ? 'blur(16px)' : 'none',
-        boxShadow: isSticky ? '0 1px 12px rgba(0,0,0,0.04)' : 'none',
+        boxShadow: isSticky ? '0 1px 20px rgba(0,0,0,0.2)' : 'none',
+        borderBottom: isSticky ? `1px solid ${COLORS.borderGold}` : 'none',
         transition: `background-color ${TRANSITIONS.normal} ease, box-shadow ${TRANSITIONS.normal} ease, padding ${TRANSITIONS.normal} ease`,
         padding: isSticky ? '0.75rem 0' : '2rem 0 0',
       }}
@@ -63,11 +64,11 @@ export default function Navigation({
         style={{
           display: 'flex',
           gap: '2rem',
-          fontFamily: FONTS.serif,
+          fontFamily: FONTS.body,
           fontWeight: 500,
-          fontSize: '0.95rem',
+          fontSize: '0.9rem',
           letterSpacing: '0.08em',
-          color: COLORS.textPrimary,
+          color: COLORS.textSecondary,
         }}
       >
         {links.map((link, index) => (
@@ -76,9 +77,9 @@ export default function Navigation({
             href={link.href}
             onClick={(e) => handleClick(e, link.href)}
             style={{
-              color: COLORS.textPrimary,
+              color: COLORS.textSecondary,
               textDecoration: 'none',
-              transition: `color ${TRANSITIONS.normal} ease, border-color ${TRANSITIONS.normal} ease`,
+              transition: `color ${TRANSITIONS.normal} ease`,
               cursor: 'pointer',
               borderBottom: '1px solid transparent',
               paddingBottom: '4px',
@@ -91,7 +92,7 @@ export default function Navigation({
               e.currentTarget.style.borderBottomColor = COLORS.accent;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = COLORS.textPrimary;
+              e.currentTarget.style.color = COLORS.textSecondary;
               e.currentTarget.style.borderBottomColor = 'transparent';
             }}
           >

@@ -11,7 +11,7 @@ export default function Footer() {
       sx={{
         py: 4,
         mt: 0,
-        backgroundColor: COLORS.bgCream,
+        backgroundColor: COLORS.primaryDark,
         borderTop: `1px solid ${COLORS.borderGold}`,
         position: 'relative',
       }}
@@ -24,11 +24,11 @@ export default function Footer() {
             component='p'
             sx={{
               fontFamily: FONTS.script,
-              color: COLORS.primary,
-              fontWeight: 600,
+              color: COLORS.accent,
               mb: 3,
-              fontSize: { xs: '1.5rem', md: '2rem' },
+              fontSize: { xs: '1.8rem', md: '2.2rem' },
               lineHeight: 1.4,
+              textShadow: '0 0 20px rgba(232, 168, 56, 0.2)',
             }}
           >
             Thành & Mến cảm ơn mọi người!
@@ -42,7 +42,7 @@ export default function Footer() {
               color: COLORS.textSecondary,
               fontSize: { xs: '0.9rem', md: '1rem' },
               fontWeight: 400,
-              fontFamily: FONTS.serif,
+              fontFamily: FONTS.body,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -64,8 +64,8 @@ export default function Footer() {
                   textUnderlineOffset: '3px',
                   transition: 'all 0.25s ease',
                   '&:hover': {
-                    color: COLORS.heartRed,
-                    textDecorationColor: COLORS.heartRed,
+                    color: COLORS.accent,
+                    textDecorationColor: COLORS.accent,
                   },
                 }}
               >
@@ -75,9 +75,10 @@ export default function Footer() {
             with lots of{' '}
             <Favorite
               sx={{
-                color: COLORS.heartRed,
+                color: COLORS.coral,
                 fontSize: '1.2rem',
                 animation: 'heartbeat 3s ease-in-out infinite',
+                filter: `drop-shadow(0 0 6px ${COLORS.coral})`,
                 '@keyframes heartbeat': {
                   '0%': { transform: 'scale(1)' },
                   '14%': { transform: 'scale(1.08)' },
@@ -92,37 +93,37 @@ export default function Footer() {
               component='span'
               sx={{
                 fontWeight: 600,
-                color: COLORS.heartRed,
+                color: COLORS.coral,
                 fontFamily: FONTS.script,
-                fontSize: '1.1em',
+                fontSize: '1.2em',
+                textShadow: `0 0 15px ${COLORS.coral}`,
               }}
             >
               Mến
             </Box>
           </Typography>
 
-          {/* Decorative Hearts */}
+          {/* Decorative lantern dots */}
           <Box
             sx={{
               mt: 3,
               display: 'flex',
               justifyContent: 'center',
               gap: 2,
-              opacity: 0.5,
             }}
           >
-            {[...Array(3)].map((_, index) => (
-              <Favorite
+            {[COLORS.accent, COLORS.coral, COLORS.lanternRed, COLORS.coral, COLORS.accent].map((color, index) => (
+              <Box
                 key={index}
                 sx={{
-                  color: COLORS.heartRed,
-                  fontSize: '0.8rem',
-                  animation: `float ${3 + index * 0.8}s ease-in-out infinite`,
-                  animationDelay: `${index * 0.5}s`,
-                  '@keyframes float': {
-                    '0%, 100%': { transform: 'translateY(0px)' },
-                    '50%': { transform: 'translateY(-4px)' },
-                  },
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  backgroundColor: color,
+                  opacity: 0.5,
+                  boxShadow: `0 0 8px ${color}`,
+                  animation: `firefly ${3 + index * 0.5}s ease-in-out infinite`,
+                  animationDelay: `${index * 0.3}s`,
                 }}
               />
             ))}

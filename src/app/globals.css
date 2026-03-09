@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #FAF7F2;
-  --foreground: #3B2E26;
+  --background: #1A1A2E;
+  --foreground: #FFF8ED;
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Quicksand', 'Libre Baskerville', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -29,8 +29,22 @@ body {
   }
 }
 
-/* Selection color matching wedding palette */
+/* Selection color matching lantern palette */
 ::selection {
-  background-color: rgba(184, 150, 59, 0.2);
-  color: #3B2E26;
+  background-color: rgba(232, 168, 56, 0.3);
+  color: #FFF8ED;
+}
+
+/* Firefly animation */
+@keyframes firefly {
+  0%, 100% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  25% { opacity: 0.8; transform: translate(10px, -20px) scale(1); }
+  50% { opacity: 0.4; transform: translate(-5px, -40px) scale(0.8); }
+  75% { opacity: 0.6; transform: translate(15px, -60px) scale(0.6); }
+}
+
+/* Lantern float animation */
+@keyframes lanternFloat {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
 }

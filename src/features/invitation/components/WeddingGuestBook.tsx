@@ -7,9 +7,6 @@ import {
   Box,
   Typography,
   Container,
-  Paper,
-  Avatar,
-  Divider,
   Pagination,
   CircularProgress,
 } from '@mui/material';
@@ -17,6 +14,7 @@ import { months } from '../constants';
 import { trpc } from '@/utils/trpc';
 import { COLORS, FONTS, sectionHeadingStyle } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import OrnamentalDivider from './OrnamentalDivider';
 
 interface WeddingGuestBookProps {
   itemsPerPage?: number;
@@ -55,266 +53,149 @@ export default function WeddingGuestBook({
       id='guestbook'
       sx={{
         py: { xs: 8, md: 12 },
-        background: `linear-gradient(135deg, ${COLORS.bgWarm} 0%, #E6DDD2 100%)`,
+        backgroundColor: COLORS.bgNavy,
         position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `
-            radial-gradient(circle at 20% 50%, ${COLORS.primary}08 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, ${COLORS.primaryLight}08 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, ${COLORS.primaryDark}08 0%, transparent 50%)
-          `,
-          pointerEvents: 'none',
-        },
       }}
     >
       <Container maxWidth='md'>
-        {/* Notebook Header */}
+        {/* Header */}
         <ScrollReveal>
           <Box
             sx={{ textAlign: 'center', mb: 6, position: 'relative', zIndex: 1 }}
           >
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-              Lời chúc
+              Lời Chúc
             </Typography>
+            <OrnamentalDivider />
           </Box>
         </ScrollReveal>
 
-        {/* Notebook Pages */}
+        {/* Wishes as glowing cards */}
         <ScrollReveal delay={0.2}>
-          <Paper
-            elevation={8}
-            sx={{
-              position: 'relative',
-              backgroundColor: '#FEFCF7',
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.12)',
-              minHeight: 200,
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                left: 60,
-                top: 0,
-                bottom: 0,
-                width: '2px',
-                backgroundColor: COLORS.heartRed,
-                opacity: 0.4,
-                zIndex: 1,
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 50,
-                backgroundColor: COLORS.bgCream,
-                borderRight: `1px solid ${COLORS.bgWarm}`,
-                zIndex: 0,
-              },
-            }}
-          >
-            {/* Spiral Binding */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 15,
-                top: 20,
-                bottom: 20,
-                width: 20,
-                zIndex: 2,
-              }}
-            >
-              {Array.from({ length: 12 }).map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    position: 'absolute',
-                    top: `${(index * 100) / 11}%`,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: { xs: 10, md: 12 },
-                    height: { xs: 10, md: 12 },
-                    borderRadius: '50%',
-                    backgroundColor: COLORS.gold,
-                    border: `1px solid ${COLORS.accentDark}`,
-                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.15)',
-                  }}
-                />
-              ))}
-            </Box>
+          <Box sx={{ minHeight: 200 }}>
+            {isLoading && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  py: 8,
+                }}
+              >
+                <CircularProgress sx={{ color: COLORS.accent }} />
+              </Box>
+            )}
 
-            {/* Notebook Lines Background */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 80,
-                right: 20,
-                top: 0,
-                bottom: 0,
-                backgroundImage: `repeating-linear-gradient(
-                  transparent,
-                  transparent 31px,
-                  ${COLORS.bgWarm} 31px,
-                  ${COLORS.bgWarm} 32px
-                )`,
-                opacity: 0.6,
-                zIndex: 0,
-              }}
-            />
-
-            {/* Content */}
-            <Box sx={{ pl: 10, pr: 4, py: 4, position: 'relative', zIndex: 2 }}>
-              {isLoading && (
-                <Box
+            {!isLoading && wishes.length === 0 && (
+              <Box sx={{ textAlign: 'center', py: 8 }}>
+                <Typography
                   sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    py: 8,
+                    fontFamily: FONTS.body,
+                    color: COLORS.textSecondary,
+                    fontSize: '1.1rem',
                   }}
                 >
-                  <CircularProgress sx={{ color: COLORS.primary }} />
-                </Box>
-              )}
+                  ...
+                </Typography>
+              </Box>
+            )}
 
-              {!isLoading && wishes.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 8 }}>
-                  <Typography
-                    sx={{
-                      fontFamily: FONTS.handwritten,
-                      color: COLORS.primaryLight,
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    ...
-                  </Typography>
-                </Box>
-              )}
-
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                gap: 3,
+              }}
+            >
               {wishes.map((wish, index) => (
                 <Box
                   key={wish.id}
                   sx={{
-                    mb: 4,
-                    animation: `slideInLeft 0.5s ease ${index * 0.1}s both`,
-                    '@keyframes slideInLeft': {
-                      '0%': { opacity: 0, transform: 'translateX(-20px)' },
-                      '100%': { opacity: 1, transform: 'translateX(0)' },
+                    backgroundColor: COLORS.bgCard,
+                    backdropFilter: 'blur(8px)',
+                    borderRadius: 3,
+                    border: `1px solid ${COLORS.borderGold}`,
+                    p: 3,
+                    boxShadow: index % 2 === 0 ? COLORS.glowAmber : COLORS.glowCoral,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 40px rgba(232, 168, 56, 0.2)',
                     },
                   }}
                 >
-                  {/* Wish Header */}
-                  <Box
+                  {/* Wish Message */}
+                  <Typography
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
+                      fontFamily: FONTS.serif,
+                      color: COLORS.textPrimary,
+                      lineHeight: 1.8,
+                      fontSize: '1rem',
+                      fontStyle: 'italic',
                       mb: 2,
-                      gap: 2,
                     }}
                   >
-                    <Avatar
+                    &ldquo;{wish.message}&rdquo;
+                  </Typography>
+
+                  {/* Author & Date */}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    {/* Avatar circle */}
+                    <Box
                       sx={{
-                        width: 40,
-                        height: 40,
-                        backgroundColor: COLORS.primary,
-                        color: COLORS.textOnPrimary,
-                        fontWeight: 600,
-                        fontFamily: FONTS.serif,
+                        width: 36,
+                        height: 36,
+                        borderRadius: '50%',
+                        background: `linear-gradient(135deg, ${COLORS.accent}, ${COLORS.coral})`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
                       }}
                     >
-                      {wish.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                        .slice(0, 2)
-                        .toUpperCase()}
-                    </Avatar>
-
-                    <Box sx={{ flex: 1 }}>
                       <Typography
-                        variant='h6'
                         sx={{
-                          fontFamily: FONTS.handwritten,
-                          color: COLORS.primaryDark,
+                          color: COLORS.textOnPrimary,
+                          fontWeight: 700,
+                          fontSize: '0.8rem',
+                          fontFamily: FONTS.body,
+                        }}
+                      >
+                        {wish.name
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </Typography>
+                    </Box>
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontFamily: FONTS.body,
+                          color: COLORS.accent,
                           fontWeight: 600,
-                          fontSize: '1.1rem',
+                          fontSize: '0.9rem',
                         }}
                       >
                         {wish.name}
                       </Typography>
                       <Typography
-                        variant='caption'
                         sx={{
-                          color: COLORS.primaryLight,
+                          color: COLORS.textSecondary,
                           fontSize: '0.75rem',
-                          fontStyle: 'italic',
-                          fontFamily: FONTS.serif,
+                          fontFamily: FONTS.body,
                         }}
                       >
                         {formatDate(wish.createdAt)}
                       </Typography>
                     </Box>
                   </Box>
-
-                  {/* Wish Message */}
-                  <Box
-                    sx={{
-                      ml: 6,
-                      p: 3,
-                      backgroundColor: `${COLORS.bgCream}80`,
-                      borderRadius: 2,
-                      border: `1px dotted ${COLORS.goldLight}`,
-                      position: 'relative',
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        left: -8,
-                        top: 20,
-                        width: 0,
-                        height: 0,
-                        borderTop: '8px solid transparent',
-                        borderBottom: '8px solid transparent',
-                        borderRight: `8px solid ${COLORS.bgCream}80`,
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant='body1'
-                      sx={{
-                        fontFamily: FONTS.handwritten,
-                        color: COLORS.textPrimary,
-                        lineHeight: 1.8,
-                        fontSize: '1rem',
-                        textAlign: 'justify',
-                        letterSpacing: '0.3px',
-                      }}
-                    >
-                      &quot;{wish.message}&quot;
-                    </Typography>
-                  </Box>
-
-                  {/* Divider */}
-                  {index < wishes.length - 1 && (
-                    <Divider
-                      sx={{
-                        mt: 3,
-                        borderColor: COLORS.bgWarm,
-                        borderStyle: 'dashed',
-                        opacity: 0.7,
-                      }}
-                    />
-                  )}
                 </Box>
               ))}
             </Box>
-          </Paper>
+          </Box>
         </ScrollReveal>
 
         {/* Pagination */}
@@ -324,23 +205,22 @@ export default function WeddingGuestBook({
               count={totalPages}
               page={currentPage}
               onChange={handlePageChange}
-              color='primary'
               size='large'
               sx={{
                 '& .MuiPaginationItem-root': {
-                  backgroundColor: '#FEFCF7',
-                  border: `1px solid ${COLORS.bgWarm}`,
-                  color: COLORS.primary,
+                  backgroundColor: COLORS.bgCard,
+                  border: `1px solid ${COLORS.borderGold}`,
+                  color: COLORS.textSecondary,
                   fontWeight: 600,
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                   '&:hover': {
-                    backgroundColor: COLORS.bgWarm,
+                    backgroundColor: 'rgba(232, 168, 56, 0.1)',
                   },
                   '&.Mui-selected': {
-                    backgroundColor: COLORS.primary,
+                    backgroundColor: COLORS.accent,
                     color: COLORS.textOnPrimary,
                     '&:hover': {
-                      backgroundColor: COLORS.primaryDark,
+                      backgroundColor: COLORS.accentDark,
                     },
                   },
                 },

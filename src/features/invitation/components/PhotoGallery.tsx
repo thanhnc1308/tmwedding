@@ -18,6 +18,7 @@ import {
   sectionHeadingStyle,
 } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import OrnamentalDivider from './OrnamentalDivider';
 
 interface WeddingPhoto {
   id: string;
@@ -89,7 +90,7 @@ export default function PhotoGallery({
       id='gallery'
       sx={{
         py: { xs: 8, md: 12 },
-        backgroundColor: COLORS.bgWhite,
+        backgroundColor: COLORS.bgNavyLight,
       }}
     >
       <Container maxWidth='lg'>
@@ -97,17 +98,18 @@ export default function PhotoGallery({
         <ScrollReveal>
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-              Một số khoảnh khắc của chúng mình
+              Khoảnh Khắc Của Chúng Mình
             </Typography>
+            <OrnamentalDivider />
           </Box>
         </ScrollReveal>
 
-        {/* Masonry Grid */}
+        {/* Polaroid-style Grid */}
         <ScrollReveal delay={0.2}>
           <Box
             sx={{
               columnCount: { xs: 1, sm: 2, md: 3 },
-              columnGap: '16px',
+              columnGap: '20px',
             }}
           >
             {photos.map((photo, index) => (
@@ -115,67 +117,51 @@ export default function PhotoGallery({
                 key={photo.id}
                 sx={{
                   breakInside: 'avoid',
-                  mb: 2,
-                  borderRadius: 2,
-                  overflow: 'hidden',
+                  mb: 2.5,
                   cursor: 'pointer',
                   position: 'relative',
+                  // Polaroid frame
+                  backgroundColor: COLORS.bgCream,
+                  p: 1.5,
+                  pb: 5,
+                  borderRadius: 1,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                   transition: `all ${TRANSITIONS.normal} ease`,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                  transform: `rotate(${index % 2 === 0 ? -1.5 : 1.5}deg)`,
                   '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 12px 28px rgba(0,0,0,0.1)',
-                  },
-                  '&:hover .photo-overlay': {
-                    opacity: 1,
+                    transform: 'rotate(0deg) translateY(-6px)',
+                    boxShadow: `0 8px 30px rgba(0,0,0,0.4), ${COLORS.glowAmber}`,
                   },
                 }}
                 onClick={() => handlePhotoClick(photo, index)}
               >
-                <Image
-                  src={photo.thumbnailUrl}
-                  alt={photo.alt}
-                  width={600}
-                  height={index % 3 === 0 ? 700 : index % 3 === 1 ? 500 : 600}
-                  loading='lazy'
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    display: 'block',
-                  }}
-                />
+                <Box sx={{ overflow: 'hidden', borderRadius: 0.5 }}>
+                  <Image
+                    src={photo.thumbnailUrl}
+                    alt={photo.alt}
+                    width={600}
+                    height={index % 3 === 0 ? 700 : index % 3 === 1 ? 500 : 600}
+                    loading='lazy'
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                    }}
+                  />
+                </Box>
 
-                {/* Overlay */}
-                <Box
-                  className='photo-overlay'
+                {/* Polaroid caption */}
+                <Typography
                   sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background:
-                      'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    p: 2.5,
-                    opacity: 0,
-                    transition: `opacity ${TRANSITIONS.normal} ease`,
+                    textAlign: 'center',
+                    mt: 1.5,
+                    fontFamily: FONTS.script,
+                    color: COLORS.textDark,
+                    fontSize: '1.1rem',
                   }}
                 >
-                  <Typography
-                    variant='h6'
-                    sx={{
-                      color: 'white',
-                      fontWeight: 600,
-                      fontFamily: FONTS.serif,
-                      mb: 0.5,
-                    }}
-                  >
-                    {photo.title}
-                  </Typography>
-                </Box>
+                  {photo.title}
+                </Typography>
               </Box>
             ))}
           </Box>
@@ -299,7 +285,8 @@ export default function PhotoGallery({
                       variant='h5'
                       sx={{
                         fontFamily: FONTS.script,
-                        fontWeight: 600,
+                        color: COLORS.accent,
+                        fontWeight: 400,
                         mb: 1,
                       }}
                     >
@@ -309,10 +296,10 @@ export default function PhotoGallery({
                       <Typography
                         variant='body1'
                         sx={{
-                          color: 'rgba(255,255,255,0.8)',
+                          color: 'rgba(255,255,255,0.7)',
                           mb: 2,
                           lineHeight: 1.6,
-                          fontFamily: FONTS.serif,
+                          fontFamily: FONTS.body,
                         }}
                       >
                         {selectedPhoto.description}

@@ -12,7 +12,7 @@ export default function GiftMessage() {
         textAlign: 'center',
         py: { xs: 8, md: 10 },
         px: 3,
-        backgroundColor: COLORS.bgWarm,
+        backgroundColor: COLORS.bgNavy,
       }}
     >
       <ScrollReveal>
@@ -20,13 +20,14 @@ export default function GiftMessage() {
         <Typography
           sx={{
             fontFamily: FONTS.script,
-            fontSize: { xs: '1.6rem', sm: '2rem' },
-            color: COLORS.primary,
+            fontSize: { xs: '1.8rem', sm: '2.2rem' },
+            color: COLORS.accent,
             lineHeight: 1.6,
             maxWidth: 600,
             mx: 'auto',
             mt: 3,
             mb: 2,
+            textShadow: '0 0 30px rgba(232, 168, 56, 0.2)',
           }}
         >
           Sự hiện diện và lời chúc của bạn là món quà quý giá nhất đối với chúng
@@ -34,12 +35,12 @@ export default function GiftMessage() {
         </Typography>
         <Typography
           sx={{
-            fontSize: { xs: '1rem', sm: '1.1rem' },
+            fontSize: { xs: '0.95rem', sm: '1.05rem' },
             color: COLORS.textSecondary,
             lineHeight: 1.6,
             maxWidth: 500,
             mx: 'auto',
-            fontFamily: FONTS.serif,
+            fontFamily: FONTS.body,
           }}
         >
           Nếu bạn muốn gửi gắm thêm tình cảm, có thể tìm thấy thông tin bên dưới

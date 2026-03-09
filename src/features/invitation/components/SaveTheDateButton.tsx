@@ -79,18 +79,20 @@ export default function SaveTheDateButton({
       <MenuButton
         className='inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium tracking-wider transition-all duration-300 cursor-pointer'
         style={{
-          backgroundColor: `${COLORS.bgWhite}CC`,
+          backgroundColor: COLORS.bgCard,
           border: `1px solid ${COLORS.borderGold}`,
           color: COLORS.textPrimary,
-          fontFamily: FONTS.serif,
+          fontFamily: FONTS.body,
+          backdropFilter: 'blur(8px)',
+          boxShadow: COLORS.glowAmber,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = COLORS.bgWhite;
-          e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+          e.currentTarget.style.borderColor = COLORS.accent;
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(232, 168, 56, 0.25)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = `${COLORS.bgWhite}CC`;
-          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.borderColor = COLORS.borderGold;
+          e.currentTarget.style.boxShadow = COLORS.glowAmber;
         }}
       >
         Thêm vào lịch
@@ -99,8 +101,12 @@ export default function SaveTheDateButton({
 
       <MenuItems
         transition
-        className='absolute right-0 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in z-10'
-        style={{ backgroundColor: COLORS.bgWhite }}
+        className='absolute right-0 mt-2 w-56 origin-top-right rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in z-10'
+        style={{
+          backgroundColor: COLORS.primaryLight,
+          border: `1px solid ${COLORS.borderGold}`,
+          backdropFilter: 'blur(12px)',
+        }}
       >
         <div className='py-1'>
           <MenuItem>
@@ -109,9 +115,9 @@ export default function SaveTheDateButton({
                 onClick={handleGoogleCalendar}
                 className='group flex w-full items-center px-4 py-2 text-sm cursor-pointer'
                 style={{
-                  backgroundColor: focus ? COLORS.bgCream : 'transparent',
+                  backgroundColor: focus ? 'rgba(232, 168, 56, 0.1)' : 'transparent',
                   color: COLORS.textPrimary,
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                 }}
               >
                 <svg className='mr-3 h-5 w-5' viewBox='0 0 24 24' fill='none'>
@@ -142,9 +148,9 @@ export default function SaveTheDateButton({
                 onClick={handleAppleCalendar}
                 className='group flex w-full items-center px-4 py-2 text-sm cursor-pointer'
                 style={{
-                  backgroundColor: focus ? COLORS.bgCream : 'transparent',
+                  backgroundColor: focus ? 'rgba(232, 168, 56, 0.1)' : 'transparent',
                   color: COLORS.textPrimary,
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                 }}
               >
                 <svg

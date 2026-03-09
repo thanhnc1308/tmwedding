@@ -1,8 +1,9 @@
 import {
   Geist,
   Geist_Mono,
-  Allison,
-  Cormorant_Garamond,
+  Libre_Baskerville,
+  Quicksand,
+  Sacramento,
 } from 'next/font/google';
 import './globals.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
@@ -21,18 +22,26 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const allison = Allison({
-  weight: '400',
-  subsets: ['latin'],
+const libreBaskerville = Libre_Baskerville({
+  variable: '--font-libre-baskerville',
+  subsets: ['latin', 'latin-ext'],
   display: 'swap',
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
 });
 
-const cormorantGaramond = Cormorant_Garamond({
-  variable: '--font-cormorant',
-  subsets: ['latin', 'vietnamese'],
+const quicksand = Quicksand({
+  variable: '--font-quicksand',
+  subsets: ['latin', 'latin-ext', 'vietnamese'],
   display: 'swap',
   weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+});
+
+const sacramento = Sacramento({
+  variable: '--font-sacramento',
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+  weight: '400',
 });
 
 export default function RootLayout({
@@ -43,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${allison} ${cormorantGaramond.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${libreBaskerville.variable} ${quicksand.variable} ${sacramento.variable} antialiased`}
         suppressHydrationWarning
       >
         <AppRouterCacheProvider>

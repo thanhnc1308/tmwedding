@@ -23,25 +23,26 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
   };
 
   return (
-    <Box sx={{ p: 3, backgroundColor: COLORS.bgWarm }}>
+    <Box sx={{ p: 3, backgroundColor: COLORS.bgNavy }}>
       {!showContent ? (
         <Box sx={{ textAlign: 'center' }}>
           <Button
             variant='contained'
             onClick={() => setShowContent(true)}
             sx={{
-              backgroundColor: COLORS.primary,
+              backgroundColor: COLORS.accent,
               color: COLORS.textOnPrimary,
-              fontFamily: FONTS.script,
-              fontSize: '1.2rem',
+              fontFamily: FONTS.body,
+              fontSize: '1rem',
               py: 2,
               px: 4,
               borderRadius: 3,
               textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(107, 76, 59, 0.25)',
+              fontWeight: 600,
+              boxShadow: '0 4px 20px rgba(232, 168, 56, 0.3)',
               '&:hover': {
-                backgroundColor: COLORS.primaryDark,
-                boxShadow: '0 6px 16px rgba(107, 76, 59, 0.35)',
+                backgroundColor: COLORS.accentDark,
+                boxShadow: '0 6px 24px rgba(232, 168, 56, 0.4)',
                 transform: 'translateY(-2px)',
               },
               transition: `all ${TRANSITIONS.normal} ease`,
@@ -81,7 +82,7 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                     fontSize: '0.9rem',
                     mb: 1,
                     fontWeight: 500,
-                    fontFamily: FONTS.serif,
+                    fontFamily: FONTS.body,
                   }}
                 >
                   {account.title}
@@ -94,8 +95,9 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                     fontWeight: 700,
                     fontSize: '1.3rem',
                     mb: 0.5,
-                    color: COLORS.textPrimary,
-                    fontFamily: FONTS.serif,
+                    color: COLORS.accent,
+                    fontFamily: FONTS.script,
+                    textShadow: '0 0 15px rgba(232, 168, 56, 0.2)',
                   }}
                 >
                   {account.name}
@@ -117,6 +119,7 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                       border: `1px solid ${COLORS.borderGold}`,
                       borderRadius: 2,
                       overflow: 'hidden',
+                      backgroundColor: 'white',
                     }}
                   >
                     <Image
@@ -148,7 +151,7 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                           fontSize: '0.85rem',
                           color: COLORS.textSecondary,
                           fontWeight: 500,
-                          fontFamily: FONTS.serif,
+                          fontFamily: FONTS.body,
                         }}
                       >
                         {item.label}
@@ -159,7 +162,7 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                           color: COLORS.textPrimary,
                           fontWeight: 600,
                           textAlign: 'right',
-                          fontFamily: FONTS.serif,
+                          fontFamily: FONTS.body,
                         }}
                       >
                         {item.value}
@@ -171,18 +174,19 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                 {/* Large Account Number Display */}
                 <Box
                   sx={{
-                    backgroundColor: COLORS.bgCream,
+                    backgroundColor: 'rgba(232, 168, 56, 0.1)',
                     borderRadius: 2,
                     py: 2,
                     mb: 2,
                     textAlign: 'center',
+                    border: `1px solid ${COLORS.borderGold}`,
                   }}
                 >
                   <Typography
                     sx={{
                       fontSize: '1.5rem',
                       fontWeight: 700,
-                      color: COLORS.textPrimary,
+                      color: COLORS.accent,
                       letterSpacing: '2px',
                       fontFamily: 'monospace',
                     }}
@@ -205,11 +209,11 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
                     fontSize: '0.9rem',
                     py: 1.2,
                     borderRadius: 2,
-                    fontFamily: FONTS.serif,
+                    fontFamily: FONTS.body,
                     transition: `all ${TRANSITIONS.normal} ease`,
                     '&:hover': {
-                      borderColor: COLORS.accentDark,
-                      backgroundColor: `${COLORS.accent}0A`,
+                      borderColor: COLORS.accentLight,
+                      backgroundColor: 'rgba(232, 168, 56, 0.08)',
                     },
                   }}
                 >

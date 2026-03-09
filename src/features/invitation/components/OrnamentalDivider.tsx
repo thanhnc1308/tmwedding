@@ -29,20 +29,22 @@ export default function OrnamentalDivider({
           flex: 1,
           height: '1px',
           background: `linear-gradient(to right, transparent, ${color})`,
+          opacity: 0.4,
         }}
       />
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path
-          d="M8 0L9.8 6.2L16 8L9.8 9.8L8 16L6.2 9.8L0 8L6.2 6.2L8 0Z"
-          fill={color}
-          opacity="0.8"
-        />
+      {/* Small lantern icon */}
+      <svg width='16' height='22' viewBox='0 0 16 22' fill='none'>
+        <rect x='6.5' y='0' width='3' height='3' rx='1.5' fill={color} opacity='0.5' />
+        <ellipse cx='8' cy='13' rx='6' ry='8' fill={color} opacity='0.15' />
+        <ellipse cx='8' cy='13' rx='5' ry='7' stroke={color} strokeWidth='0.8' opacity='0.5' />
+        <line x1='8' y1='3' x2='8' y2='6' stroke={color} strokeWidth='0.8' opacity='0.4' />
       </svg>
       <Box
         sx={{
           flex: 1,
           height: '1px',
           background: `linear-gradient(to left, transparent, ${color})`,
+          opacity: 0.4,
         }}
       />
     </Box>

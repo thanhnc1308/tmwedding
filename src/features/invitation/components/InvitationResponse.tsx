@@ -20,18 +20,22 @@ import OrnamentalDivider from './OrnamentalDivider';
 import ScrollReveal from './ScrollReveal';
 
 const FormContainer = styled(Box)(() => ({
-  backgroundColor: COLORS.bgCream,
+  backgroundColor: COLORS.bgCard,
+  backdropFilter: 'blur(12px)',
   padding: '40px 32px',
   maxWidth: '600px',
   margin: '0 auto',
-  borderRadius: '16px',
+  borderRadius: '20px',
+  border: `1px solid ${COLORS.borderGold}`,
+  boxShadow: COLORS.glowAmber,
 }));
 
 const StyledTextField = styled(TextField)(() => ({
   '& .MuiOutlinedInput-root': {
-    backgroundColor: COLORS.bgWhite,
-    borderRadius: '8px',
-    fontFamily: FONTS.serif,
+    backgroundColor: 'rgba(255, 248, 237, 0.06)',
+    borderRadius: '12px',
+    fontFamily: FONTS.body,
+    color: COLORS.textPrimary,
     '& fieldset': {
       borderColor: COLORS.borderGold,
       borderWidth: '1px',
@@ -46,14 +50,15 @@ const StyledTextField = styled(TextField)(() => ({
   },
   '& .MuiInputBase-input': {
     color: COLORS.textPrimary,
-    fontFamily: FONTS.serif,
+    fontFamily: FONTS.body,
     '&::placeholder': {
       color: COLORS.textSecondary,
       opacity: 1,
     },
   },
   '& .MuiInputLabel-root': {
-    fontFamily: FONTS.serif,
+    fontFamily: FONTS.body,
+    color: COLORS.textSecondary,
   },
 }));
 
@@ -63,14 +68,14 @@ const SubmitButton = styled(Button)(() => ({
   fontWeight: 600,
   fontSize: '14px',
   padding: '14px 24px',
-  borderRadius: '8px',
+  borderRadius: '12px',
   textTransform: 'uppercase',
   letterSpacing: '2px',
-  fontFamily: FONTS.serif,
-  boxShadow: '0 4px 12px rgba(184, 150, 59, 0.25)',
+  fontFamily: FONTS.body,
+  boxShadow: '0 4px 20px rgba(232, 168, 56, 0.3)',
   '&:hover': {
     backgroundColor: COLORS.accentDark,
-    boxShadow: '0 6px 16px rgba(184, 150, 59, 0.35)',
+    boxShadow: '0 6px 24px rgba(232, 168, 56, 0.4)',
     transform: 'translateY(-1px)',
   },
   transition: `all ${TRANSITIONS.normal} ease`,
@@ -121,7 +126,7 @@ export default function InvitationResponse({
 
   if (isSubmitted) {
     return (
-      <Box id='rsvp'>
+      <Box id='rsvp' sx={{ backgroundColor: COLORS.bgNavy, py: { xs: 2, md: 4 } }}>
         <FormContainer>
           <ScrollReveal>
             <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -130,29 +135,30 @@ export default function InvitationResponse({
                   width: 60,
                   height: 60,
                   borderRadius: '50%',
-                  backgroundColor: `${COLORS.accent}1A`,
+                  backgroundColor: 'rgba(232, 168, 56, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   mx: 'auto',
                   mb: 2,
+                  boxShadow: '0 0 20px rgba(232, 168, 56, 0.2)',
                 }}
               >
                 <svg width='28' height='28' viewBox='0 0 24 24' fill='none'>
                   <path
                     d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
-                    fill={COLORS.heartRed}
+                    fill={COLORS.coral}
                   />
                 </svg>
               </Box>
               <Typography
                 sx={{
                   fontFamily: FONTS.script,
-                  fontSize: '2rem',
+                  fontSize: '2.2rem',
                   color: COLORS.accent,
-                  fontWeight: 600,
                   mb: 2,
                   lineHeight: 1.4,
+                  textShadow: '0 0 20px rgba(232, 168, 56, 0.2)',
                 }}
               >
                 Cảm ơn bạn đã phản hồi!
@@ -162,7 +168,7 @@ export default function InvitationResponse({
                   color: COLORS.textSecondary,
                   fontSize: '1rem',
                   lineHeight: 1.6,
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                 }}
               >
                 Chúng mình rất vui khi nhận được phản hồi của bạn.
@@ -177,82 +183,20 @@ export default function InvitationResponse({
   }
 
   return (
-    <Box id='rsvp'>
+    <Box id='rsvp' sx={{ backgroundColor: COLORS.bgNavy, py: { xs: 2, md: 4 } }}>
       <FormContainer>
         <ScrollReveal>
-          {/* Decorative header */}
-          <Box sx={{ textAlign: 'center', mb: 3 }}>
-            <svg
-              width='60'
-              height='40'
-              viewBox='0 0 60 40'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M5 20 Q15 5, 25 15 Q28 18, 30 20 Q32 18, 35 15 Q45 5, 55 20'
-                stroke={COLORS.accent}
-                strokeWidth='1'
-                fill='none'
-                opacity='0.5'
-              />
-              <path
-                d='M5 20 Q15 35, 25 25 Q28 22, 30 20 Q32 22, 35 25 Q45 35, 55 20'
-                stroke={COLORS.accent}
-                strokeWidth='1'
-                fill='none'
-                opacity='0.5'
-              />
-              <ellipse
-                cx='12'
-                cy='14'
-                rx='4'
-                ry='2'
-                transform='rotate(-20 12 14)'
-                fill={COLORS.accent}
-                opacity='0.2'
-              />
-              <ellipse
-                cx='48'
-                cy='14'
-                rx='4'
-                ry='2'
-                transform='rotate(20 48 14)'
-                fill={COLORS.accent}
-                opacity='0.2'
-              />
-              <ellipse
-                cx='12'
-                cy='26'
-                rx='4'
-                ry='2'
-                transform='rotate(20 12 26)'
-                fill={COLORS.accent}
-                opacity='0.2'
-              />
-              <ellipse
-                cx='48'
-                cy='26'
-                rx='4'
-                ry='2'
-                transform='rotate(-20 48 26)'
-                fill={COLORS.accent}
-                opacity='0.2'
-              />
-            </svg>
-          </Box>
-
           {/* Header */}
           {!isKnownGuest && (
             <Typography
               sx={{
                 textAlign: 'center',
                 fontFamily: FONTS.script,
-                fontSize: '2rem',
+                fontSize: '2.2rem',
                 color: COLORS.accent,
-                fontWeight: 600,
                 mb: 1,
                 lineHeight: 1.3,
+                textShadow: '0 0 20px rgba(232, 168, 56, 0.2)',
               }}
             >
               Cho chúng mình biết bạn có tham
@@ -266,11 +210,11 @@ export default function InvitationResponse({
               sx={{
                 textAlign: 'center',
                 fontFamily: FONTS.script,
-                fontSize: '2rem',
+                fontSize: '2.2rem',
                 color: COLORS.accent,
-                fontWeight: 600,
                 mb: 1,
                 lineHeight: 1.3,
+                textShadow: '0 0 20px rgba(232, 168, 56, 0.2)',
               }}
             >
               {capitalizeFirstLetter(guestPronoun)} {name} cho chúng mình biết
@@ -293,9 +237,9 @@ export default function InvitationResponse({
                   sx={{
                     mb: 1,
                     fontWeight: 500,
-                    color: COLORS.textPrimary,
+                    color: COLORS.textSecondary,
                     fontSize: '14px',
-                    fontFamily: FONTS.serif,
+                    fontFamily: FONTS.body,
                   }}
                 >
                   Cho chúng mình xin tên của bạn nhé?*
@@ -318,9 +262,9 @@ export default function InvitationResponse({
                 sx={{
                   mb: 1,
                   fontWeight: 500,
-                  color: COLORS.textPrimary,
+                  color: COLORS.textSecondary,
                   fontSize: '14px',
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                 }}
               >
                 Số lượng người tham gia?*
@@ -344,9 +288,9 @@ export default function InvitationResponse({
                 sx={{
                   mb: 1,
                   fontWeight: 500,
-                  color: COLORS.textPrimary,
+                  color: COLORS.textSecondary,
                   fontSize: '14px',
-                  fontFamily: FONTS.serif,
+                  fontFamily: FONTS.body,
                 }}
               >
                 Bạn có muốn để lại lời nhắn, hay lời chúc gì cho tụi mình không
