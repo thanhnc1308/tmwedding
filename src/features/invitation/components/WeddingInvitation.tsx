@@ -13,10 +13,17 @@ import Envelop from '@/features/invitation/components/Envelop';
 import InvitationMessage from '@/features/invitation/components/InvitationMessage';
 import GiftMessage from '@/features/invitation/components/GiftMessage';
 import { Box, Fade, Grow } from '@mui/material';
-import { Guest } from '@/types/guest';
+import { Guest, GuestSource } from '@/types/guest';
 import { WeddingInvitationContext } from '@/features/invitation/context/WeddingInvitationContext';
 
-export default function WeddingInvitation({ guest }: { guest: Guest | null }) {
+export default function WeddingInvitation({
+  guest,
+  side,
+}: {
+  guest: Guest | null;
+  side?: GuestSource;
+}) {
+  const resolvedSide = side ?? guest?.guestSource ?? GuestSource.Groom;
   const [isInvitationOpened, setIsInvitationOpened] = useState(false);
 
   const handleOpenInvitation = () => {
@@ -46,7 +53,7 @@ export default function WeddingInvitation({ guest }: { guest: Guest | null }) {
           <Navigation />
           <Banner />
           <InvitationMessage />
-          <EventInfo />
+          <EventInfo side={resolvedSide} />
           <PhotoGallery />
           <GiftMessage />
           <WeddingMonetaryGift />
