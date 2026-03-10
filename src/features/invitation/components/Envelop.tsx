@@ -216,7 +216,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
               },
               '&:hover .envelope-img': {
                 filter:
-                  'drop-shadow(0 12px 28px rgba(78, 54, 41, 0.25)) brightness(1.03)',
+                  'drop-shadow(0 12px 28px rgba(58, 74, 58, 0.25)) brightness(1.03)',
                 transform: 'translateY(-3px)',
               },
               '&:hover .pointer-icon': {
@@ -234,7 +234,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
                 width: '100%',
                 height: 'auto',
                 display: 'block',
-                filter: 'drop-shadow(0 8px 24px rgba(78, 54, 41, 0.18))',
+                filter: 'drop-shadow(0 8px 24px rgba(58, 74, 58, 0.18))',
                 transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             />
@@ -272,7 +272,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
                 height: '40px',
                 pointerEvents: 'none',
                 filter:
-                  'drop-shadow(0 0 1px rgba(80,60,40,0.6)) drop-shadow(0 0 0.5px rgba(80,60,40,0.4))',
+                  'drop-shadow(0 0 1px rgba(58,74,58,0.6)) drop-shadow(0 0 0.5px rgba(58,74,58,0.4))',
                 animation: 'pointerBounce 2s ease-in-out 2s infinite',
                 '@keyframes pointerBounce': {
                   '0%, 100%': { transform: 'translate(-50%, -50%)' },

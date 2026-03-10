@@ -1,25 +1,25 @@
 // Consolidated wedding invitation design tokens
-// Palette: Refined warm brown + antique gold — elegant Vietnamese wedding
+// Palette: Dark olive green + sage — elegant Vietnamese wedding
 export const COLORS = {
-  // Primary - rich walnut brown
-  primary: '#6B4C3B',
-  primaryLight: '#8D6E5D',
-  primaryDark: '#4E3629',
+  // Primary - dark forest green
+  primary: '#3A4A3A',
+  primaryLight: '#5A6A5A',
+  primaryDark: '#2A352A',
 
-  // Accent - antique gold
-  accent: '#B8963B',
-  accentLight: '#D4B262',
-  accentDark: '#967726',
+  // Accent - muted sage green
+  accent: '#6B7F5E',
+  accentLight: '#8BA07B',
+  accentDark: '#536648',
 
   // Text
-  textPrimary: '#3B2E26',
-  textSecondary: '#857468',
-  textOnPrimary: '#FFFDF9',
+  textPrimary: '#2D352D',
+  textSecondary: '#6B7568',
+  textOnPrimary: '#FAFAF8',
 
   // Backgrounds
-  bgCream: '#FAF7F2',
-  bgWarm: '#F0EAE0',
-  bgWhite: '#FEFDFB',
+  bgCream: '#F5F2ED',
+  bgWarm: '#EDE9E3',
+  bgWhite: '#FAFAF8',
 
   // Envelope
   envelopeGradientStart: '#B44040',
@@ -27,15 +27,15 @@ export const COLORS = {
   envelopeGradientEnd: '#A63636',
 
   // Decorative
-  gold: '#C9A84C',
-  goldLight: '#E0C878',
+  gold: '#7A8B6F',
+  goldLight: '#9AAD8D',
   heartRed: '#D45B68',
 
   // Borders & overlays
-  borderGold: 'rgba(184, 150, 59, 0.15)',
-  borderGoldHover: 'rgba(184, 150, 59, 0.3)',
-  overlayLight: 'rgba(250, 247, 242, 0.88)',
-  overlayDark: 'rgba(59, 46, 38, 0.06)',
+  borderGold: 'rgba(107, 127, 94, 0.15)',
+  borderGoldHover: 'rgba(107, 127, 94, 0.3)',
+  overlayLight: 'rgba(245, 242, 237, 0.88)',
+  overlayDark: 'rgba(42, 53, 42, 0.06)',
 } as const;
 
 export const FONTS = {
@@ -80,7 +80,7 @@ export const cardStyle = {
 
 // Shared button styles
 export const primaryButtonStyle = {
-  backgroundColor: COLORS.primary,
+  backgroundColor: COLORS.accent,
   color: COLORS.textOnPrimary,
   borderRadius: 2,
   py: 1.5,
@@ -88,11 +88,11 @@ export const primaryButtonStyle = {
   textTransform: 'none' as const,
   fontSize: '0.9rem',
   fontFamily: FONTS.serif,
-  boxShadow: '0 4px 12px rgba(107, 76, 59, 0.25)',
+  boxShadow: '0 4px 12px rgba(107, 127, 94, 0.25)',
   '&:hover': {
-    backgroundColor: COLORS.primaryDark,
+    backgroundColor: COLORS.accentDark,
     transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(107, 76, 59, 0.35)',
+    boxShadow: '0 6px 20px rgba(107, 127, 94, 0.35)',
   },
   transition: `all ${TRANSITIONS.normal} ease`,
 } as const;

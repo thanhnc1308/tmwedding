@@ -67,10 +67,10 @@ const SubmitButton = styled(Button)(() => ({
   textTransform: 'uppercase',
   letterSpacing: '2px',
   fontFamily: FONTS.serif,
-  boxShadow: '0 4px 12px rgba(184, 150, 59, 0.25)',
+  boxShadow: '0 4px 12px rgba(107, 127, 94, 0.25)',
   '&:hover': {
     backgroundColor: COLORS.accentDark,
-    boxShadow: '0 6px 16px rgba(184, 150, 59, 0.35)',
+    boxShadow: '0 6px 16px rgba(107, 127, 94, 0.35)',
     transform: 'translateY(-1px)',
   },
   transition: `all ${TRANSITIONS.normal} ease`,

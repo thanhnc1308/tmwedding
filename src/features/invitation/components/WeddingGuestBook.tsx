@@ -1,42 +1,86 @@
 'use client';
 
-import type React from 'react';
-
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   Box,
   Typography,
   Container,
-  Paper,
   Avatar,
-  Divider,
-  Pagination,
+  IconButton,
   CircularProgress,
 } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { months } from '../constants';
 import { trpc } from '@/utils/trpc';
-import { COLORS, FONTS, sectionHeadingStyle } from '../constants/design';
+import {
+  COLORS,
+  FONTS,
+  TRANSITIONS,
+  sectionHeadingStyle,
+} from '../constants/design';
 import ScrollReveal from './ScrollReveal';
 
-interface WeddingGuestBookProps {
-  itemsPerPage?: number;
-}
+const AUTOPLAY_INTERVAL = 5000;
 
-export default function WeddingGuestBook({
-  itemsPerPage = 4,
-}: WeddingGuestBookProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+export default function WeddingGuestBook() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data, isLoading } = trpc.invitation.getResponses.useQuery({
-    page: currentPage,
-    limit: itemsPerPage,
+    page: 1,
+    limit: 50,
   });
 
-  const handlePageChange = (
-    _event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
-    setCurrentPage(value);
+  const wishes = data?.data ?? [];
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (wishes.length === 0) return;
+      setCurrentIndex(
+        ((index % wishes.length) + wishes.length) % wishes.length,
+      );
+    },
+    [wishes.length],
+  );
+
+  const goNext = useCallback(
+    () => goTo(currentIndex + 1),
+    [currentIndex, goTo],
+  );
+  const goPrev = useCallback(
+    () => goTo(currentIndex - 1),
+    [currentIndex, goTo],
+  );
+
+  // Autoplay
+  useEffect(() => {
+    if (isPaused || wishes.length <= 1) return;
+    autoplayRef.current = setInterval(goNext, AUTOPLAY_INTERVAL);
+    return () => {
+      if (autoplayRef.current) clearInterval(autoplayRef.current);
+    };
+  }, [isPaused, goNext, wishes.length]);
+
+  // Touch handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goNext();
+      else goPrev();
+    }
+    setTimeout(() => setIsPaused(false), 3000);
   };
 
   const formatDate = (dateString: string) => {
@@ -47,37 +91,25 @@ export default function WeddingGuestBook({
     return `${month} ${day}, ${year}`;
   };
 
-  const wishes = data?.data ?? [];
-  const totalPages = data?.totalPages ?? 0;
-
   return (
     <Box
       id='guestbook'
       sx={{
         py: { xs: 8, md: 12 },
-        background: `linear-gradient(135deg, ${COLORS.bgWarm} 0%, #E6DDD2 100%)`,
+        backgroundColor: COLORS.bgCream,
         position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `
-            radial-gradient(circle at 20% 50%, ${COLORS.primary}08 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, ${COLORS.primaryLight}08 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, ${COLORS.primaryDark}08 0%, transparent 50%)
-          `,
-          pointerEvents: 'none',
-        },
+        overflow: 'hidden',
       }}
     >
       <Container maxWidth='md'>
-        {/* Notebook Header */}
         <ScrollReveal>
           <Box
-            sx={{ textAlign: 'center', mb: 6, position: 'relative', zIndex: 1 }}
+            sx={{
+              textAlign: 'center',
+              mb: 6,
+              position: 'relative',
+              zIndex: 1,
+            }}
           >
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
               Lời chúc
@@ -85,269 +117,255 @@ export default function WeddingGuestBook({
           </Box>
         </ScrollReveal>
 
-        {/* Notebook Pages */}
         <ScrollReveal delay={0.2}>
-          <Paper
-            elevation={8}
-            sx={{
-              position: 'relative',
-              backgroundColor: '#FEFCF7',
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.12)',
-              minHeight: 200,
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                left: 60,
-                top: 0,
-                bottom: 0,
-                width: '2px',
-                backgroundColor: COLORS.heartRed,
-                opacity: 0.4,
-                zIndex: 1,
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 50,
-                backgroundColor: COLORS.bgCream,
-                borderRight: `1px solid ${COLORS.bgWarm}`,
-                zIndex: 0,
-              },
-            }}
-          >
-            {/* Spiral Binding */}
+          {isLoading && (
             <Box
               sx={{
-                position: 'absolute',
-                left: 15,
-                top: 20,
-                bottom: 20,
-                width: 20,
-                zIndex: 2,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                py: 8,
               }}
             >
-              {Array.from({ length: 12 }).map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    position: 'absolute',
-                    top: `${(index * 100) / 11}%`,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: { xs: 10, md: 12 },
-                    height: { xs: 10, md: 12 },
-                    borderRadius: '50%',
-                    backgroundColor: COLORS.gold,
-                    border: `1px solid ${COLORS.accentDark}`,
-                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.15)',
-                  }}
-                />
-              ))}
+              <CircularProgress sx={{ color: COLORS.primary }} />
             </Box>
+          )}
 
-            {/* Notebook Lines Background */}
+          {!isLoading && wishes.length === 0 && (
+            <Box sx={{ textAlign: 'center', py: 8 }}>
+              <Typography
+                sx={{
+                  fontFamily: FONTS.handwritten,
+                  color: COLORS.primaryLight,
+                  fontSize: '1.1rem',
+                }}
+              >
+                ...
+              </Typography>
+            </Box>
+          )}
+
+          {!isLoading && wishes.length > 0 && (
             <Box
-              sx={{
-                position: 'absolute',
-                left: 80,
-                right: 20,
-                top: 0,
-                bottom: 0,
-                backgroundImage: `repeating-linear-gradient(
-                  transparent,
-                  transparent 31px,
-                  ${COLORS.bgWarm} 31px,
-                  ${COLORS.bgWarm} 32px
-                )`,
-                opacity: 0.6,
-                zIndex: 0,
-              }}
-            />
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              sx={{ position: 'relative' }}
+            >
+              {/* Slider viewport */}
+              <Box
+                sx={{
+                  overflow: 'hidden',
+                  mx: { xs: 0, md: 5 },
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    transition: `transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)`,
+                    transform: `translateX(-${currentIndex * 100}%)`,
+                  }}
+                >
+                  {wishes.map((wish) => (
+                    <Box
+                      key={wish.id}
+                      sx={{
+                        flex: '0 0 100%',
+                        px: { xs: 2, md: 4 },
+                        boxSizing: 'border-box',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: COLORS.bgWhite,
+                          borderRadius: 3,
+                          border: `1px solid ${COLORS.borderGold}`,
+                          p: { xs: 3, md: 5 },
+                          textAlign: 'center',
+                          minHeight: 200,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {/* Quote icon */}
+                        <Typography
+                          sx={{
+                            fontSize: '3rem',
+                            lineHeight: 1,
+                            color: COLORS.accent,
+                            opacity: 0.4,
+                            fontFamily: 'Georgia, serif',
+                            mb: 1,
+                          }}
+                        >
+                          &ldquo;
+                        </Typography>
 
-            {/* Content */}
-            <Box sx={{ pl: 10, pr: 4, py: 4, position: 'relative', zIndex: 2 }}>
-              {isLoading && (
+                        {/* Message */}
+                        <Typography
+                          sx={{
+                            fontFamily: FONTS.serif,
+                            color: COLORS.textPrimary,
+                            lineHeight: 1.8,
+                            fontSize: { xs: '1rem', md: '1.15rem' },
+                            fontStyle: 'italic',
+                            maxWidth: 500,
+                            mb: 3,
+                          }}
+                        >
+                          {wish.message}
+                        </Typography>
+
+                        {/* Author */}
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1.5,
+                          }}
+                        >
+                          <Avatar
+                            sx={{
+                              width: 36,
+                              height: 36,
+                              backgroundColor: COLORS.primary,
+                              color: COLORS.textOnPrimary,
+                              fontWeight: 600,
+                              fontSize: '0.8rem',
+                              fontFamily: FONTS.serif,
+                            }}
+                          >
+                            {wish.name
+                              .split(' ')
+                              .map((n) => n[0])
+                              .join('')
+                              .slice(0, 2)
+                              .toUpperCase()}
+                          </Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography
+                              sx={{
+                                fontFamily: FONTS.serif,
+                                color: COLORS.textPrimary,
+                                fontWeight: 600,
+                                fontSize: '0.95rem',
+                              }}
+                            >
+                              {wish.name}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                color: COLORS.textSecondary,
+                                fontSize: '0.75rem',
+                                fontFamily: FONTS.serif,
+                              }}
+                            >
+                              {formatDate(wish.createdAt)}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+
+              {/* Navigation arrows */}
+              {wishes.length > 1 && (
+                <>
+                  <IconButton
+                    onClick={goPrev}
+                    aria-label='Previous wish'
+                    sx={{
+                      position: 'absolute',
+                      left: { xs: -4, md: -8 },
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: COLORS.primary,
+                      backgroundColor: COLORS.bgWhite,
+                      border: `1px solid ${COLORS.borderGold}`,
+                      width: 40,
+                      height: 40,
+                      transition: `all ${TRANSITIONS.normal} ease`,
+                      '&:hover': {
+                        backgroundColor: COLORS.bgWarm,
+                        borderColor: COLORS.borderGoldHover,
+                      },
+                    }}
+                  >
+                    <ArrowBackIos sx={{ fontSize: 16, ml: 0.5 }} />
+                  </IconButton>
+                  <IconButton
+                    onClick={goNext}
+                    aria-label='Next wish'
+                    sx={{
+                      position: 'absolute',
+                      right: { xs: -4, md: -8 },
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: COLORS.primary,
+                      backgroundColor: COLORS.bgWhite,
+                      border: `1px solid ${COLORS.borderGold}`,
+                      width: 40,
+                      height: 40,
+                      transition: `all ${TRANSITIONS.normal} ease`,
+                      '&:hover': {
+                        backgroundColor: COLORS.bgWarm,
+                        borderColor: COLORS.borderGoldHover,
+                      },
+                    }}
+                  >
+                    <ArrowForwardIos sx={{ fontSize: 16 }} />
+                  </IconButton>
+                </>
+              )}
+
+              {/* Dot indicators */}
+              {wishes.length > 1 && (
                 <Box
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    py: 8,
+                    gap: 1,
+                    mt: 4,
                   }}
                 >
-                  <CircularProgress sx={{ color: COLORS.primary }} />
-                </Box>
-              )}
-
-              {!isLoading && wishes.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 8 }}>
-                  <Typography
-                    sx={{
-                      fontFamily: FONTS.handwritten,
-                      color: COLORS.primaryLight,
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    ...
-                  </Typography>
-                </Box>
-              )}
-
-              {wishes.map((wish, index) => (
-                <Box
-                  key={wish.id}
-                  sx={{
-                    mb: 4,
-                    animation: `slideInLeft 0.5s ease ${index * 0.1}s both`,
-                    '@keyframes slideInLeft': {
-                      '0%': { opacity: 0, transform: 'translateX(-20px)' },
-                      '100%': { opacity: 1, transform: 'translateX(0)' },
-                    },
-                  }}
-                >
-                  {/* Wish Header */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      mb: 2,
-                      gap: 2,
-                    }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        backgroundColor: COLORS.primary,
-                        color: COLORS.textOnPrimary,
-                        fontWeight: 600,
-                        fontFamily: FONTS.serif,
+                  {wishes.map((_, index) => (
+                    <Box
+                      key={index}
+                      onClick={() => {
+                        goTo(index);
+                        setIsPaused(true);
+                        setTimeout(() => setIsPaused(false), 3000);
                       }}
-                    >
-                      {wish.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                        .slice(0, 2)
-                        .toUpperCase()}
-                    </Avatar>
-
-                    <Box sx={{ flex: 1 }}>
-                      <Typography
-                        variant='h6'
-                        sx={{
-                          fontFamily: FONTS.handwritten,
-                          color: COLORS.primaryDark,
-                          fontWeight: 600,
-                          fontSize: '1.1rem',
-                        }}
-                      >
-                        {wish.name}
-                      </Typography>
-                      <Typography
-                        variant='caption'
-                        sx={{
-                          color: COLORS.primaryLight,
-                          fontSize: '0.75rem',
-                          fontStyle: 'italic',
-                          fontFamily: FONTS.serif,
-                        }}
-                      >
-                        {formatDate(wish.createdAt)}
-                      </Typography>
-                    </Box>
-                  </Box>
-
-                  {/* Wish Message */}
-                  <Box
-                    sx={{
-                      ml: 6,
-                      p: 3,
-                      backgroundColor: `${COLORS.bgCream}80`,
-                      borderRadius: 2,
-                      border: `1px dotted ${COLORS.goldLight}`,
-                      position: 'relative',
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        left: -8,
-                        top: 20,
-                        width: 0,
-                        height: 0,
-                        borderTop: '8px solid transparent',
-                        borderBottom: '8px solid transparent',
-                        borderRight: `8px solid ${COLORS.bgCream}80`,
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant='body1'
                       sx={{
-                        fontFamily: FONTS.handwritten,
-                        color: COLORS.textPrimary,
-                        lineHeight: 1.8,
-                        fontSize: '1rem',
-                        textAlign: 'justify',
-                        letterSpacing: '0.3px',
-                      }}
-                    >
-                      &quot;{wish.message}&quot;
-                    </Typography>
-                  </Box>
-
-                  {/* Divider */}
-                  {index < wishes.length - 1 && (
-                    <Divider
-                      sx={{
-                        mt: 3,
-                        borderColor: COLORS.bgWarm,
-                        borderStyle: 'dashed',
-                        opacity: 0.7,
+                        width: currentIndex === index ? 24 : 8,
+                        height: 8,
+                        borderRadius: 4,
+                        backgroundColor:
+                          currentIndex === index
+                            ? COLORS.accent
+                            : COLORS.borderGoldHover,
+                        cursor: 'pointer',
+                        transition: `all ${TRANSITIONS.normal} ease`,
+                        '&:hover': {
+                          backgroundColor:
+                            currentIndex === index
+                              ? COLORS.accent
+                              : COLORS.primaryLight,
+                        },
                       }}
                     />
-                  )}
+                  ))}
                 </Box>
-              ))}
+              )}
             </Box>
-          </Paper>
+          )}
         </ScrollReveal>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={handlePageChange}
-              color='primary'
-              size='large'
-              sx={{
-                '& .MuiPaginationItem-root': {
-                  backgroundColor: '#FEFCF7',
-                  border: `1px solid ${COLORS.bgWarm}`,
-                  color: COLORS.primary,
-                  fontWeight: 600,
-                  fontFamily: FONTS.serif,
-                  '&:hover': {
-                    backgroundColor: COLORS.bgWarm,
-                  },
-                  '&.Mui-selected': {
-                    backgroundColor: COLORS.primary,
-                    color: COLORS.textOnPrimary,
-                    '&:hover': {
-                      backgroundColor: COLORS.primaryDark,
-                    },
-                  },
-                },
-              }}
-            />
-          </Box>
-        )}
       </Container>
     </Box>
   );

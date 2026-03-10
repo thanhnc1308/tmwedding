@@ -72,7 +72,7 @@ export default function CountdownTimer({
                   backgroundColor: COLORS.primary,
                   color: COLORS.textOnPrimary,
                   fontFamily: FONTS.serif,
-                  boxShadow: '0 4px 16px rgba(107, 76, 59, 0.3)',
+                  boxShadow: '0 4px 16px rgba(58, 74, 58, 0.3)',
                   transition: `transform ${TRANSITIONS.fast} ease`,
                 }}
               >

@@ -9,38 +9,72 @@ export default function Footer() {
     <Box
       component='footer'
       sx={{
-        py: 4,
-        mt: 0,
-        backgroundColor: COLORS.bgCream,
-        borderTop: `1px solid ${COLORS.borderGold}`,
         position: 'relative',
+        py: { xs: 8, md: 10 },
+        mt: 0,
+        backgroundImage: 'url(/images/wedding-bg.JPG)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      <Container maxWidth='lg'>
+      {/* Dark overlay */}
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.55)',
+        }}
+      />
+
+      <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ textAlign: 'center' }}>
-          {/* Main Thank You Message */}
+          {/* Thank You Script */}
           <Typography
-            variant='h5'
+            variant='h3'
             component='p'
             sx={{
               fontFamily: FONTS.script,
-              color: COLORS.primary,
+              color: '#FAFAF8',
               fontWeight: 600,
               mb: 3,
-              fontSize: { xs: '1.5rem', md: '2rem' },
-              lineHeight: 1.4,
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              lineHeight: 1.2,
             }}
           >
-            Thành & Mến cảm ơn mọi người!
+            Thank you!
           </Typography>
 
-          {/* Made with Love Message */}
+          {/* Gratitude Message */}
           <Typography
             variant='body1'
             component='p'
             sx={{
-              color: COLORS.textSecondary,
-              fontSize: { xs: '0.9rem', md: '1rem' },
+              color: 'rgba(255, 255, 255, 0.85)',
+              fontSize: { xs: '1rem', md: '1.1rem' },
+              fontWeight: 400,
+              fontFamily: FONTS.serif,
+              lineHeight: 1.8,
+              maxWidth: 500,
+              mx: 'auto',
+              mb: 4,
+            }}
+          >
+            Cảm ơn bạn đã dành tình cảm cho chúng mình.
+            <br />
+            Sự hiện diện của bạn là món quà ý nghĩa nhất.
+            <br />
+            Chúng mình vô cùng trân quý khi được cùng bạn chia sẻ niềm hạnh
+            phúc trong ngày.
+          </Typography>
+
+          {/* Made with Love Message */}
+          <Typography
+            variant='body2'
+            component='p'
+            sx={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: { xs: '0.85rem', md: '0.9rem' },
               fontWeight: 400,
               fontFamily: FONTS.serif,
               display: 'flex',
@@ -57,7 +91,7 @@ export default function Footer() {
                 component='span'
                 sx={{
                   fontWeight: 600,
-                  color: COLORS.textSecondary,
+                  color: 'rgba(255, 255, 255, 0.6)',
                   cursor: 'help',
                   textDecoration: 'underline',
                   textDecorationStyle: 'dotted',
@@ -100,33 +134,6 @@ export default function Footer() {
               Mến
             </Box>
           </Typography>
-
-          {/* Decorative Hearts */}
-          <Box
-            sx={{
-              mt: 3,
-              display: 'flex',
-              justifyContent: 'center',
-              gap: 2,
-              opacity: 0.5,
-            }}
-          >
-            {[...Array(3)].map((_, index) => (
-              <Favorite
-                key={index}
-                sx={{
-                  color: COLORS.heartRed,
-                  fontSize: '0.8rem',
-                  animation: `float ${3 + index * 0.8}s ease-in-out infinite`,
-                  animationDelay: `${index * 0.5}s`,
-                  '@keyframes float': {
-                    '0%, 100%': { transform: 'translateY(0px)' },
-                    '50%': { transform: 'translateY(-4px)' },
-                  },
-                }}
-              />
-            ))}
-          </Box>
         </Box>
       </Container>
     </Box>

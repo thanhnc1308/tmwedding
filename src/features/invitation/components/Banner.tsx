@@ -42,13 +42,13 @@ export default function WeddingBanner({
 
       {/* Main Content */}
       <div className='relative z-10 flex flex-col items-center justify-center min-h-screen px-4'>
-        {/* Subtitle */}
+        {/* Script Title */}
         <p
-          className='text-sm tracking-[0.3em] uppercase mb-6'
+          className='text-3xl md:text-4xl mb-8'
           style={{
-            fontFamily: FONTS.serif,
+            fontFamily: dancingScript.style.fontFamily,
             color: COLORS.textSecondary,
-            fontWeight: 500,
+            fontWeight: 400,
           }}
         >
           Dám cưới

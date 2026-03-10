@@ -30,7 +30,7 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
             variant='contained'
             onClick={() => setShowContent(true)}
             sx={{
-              backgroundColor: COLORS.primary,
+              backgroundColor: COLORS.accent,
               color: COLORS.textOnPrimary,
               fontFamily: FONTS.script,
               fontSize: '1.2rem',
@@ -38,10 +38,10 @@ export default function WeddingMonetaryGift({}: WeddingMonetaryGiftProps) {
               px: 4,
               borderRadius: 3,
               textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(107, 76, 59, 0.25)',
+              boxShadow: '0 4px 12px rgba(107, 127, 94, 0.25)',
               '&:hover': {
-                backgroundColor: COLORS.primaryDark,
-                boxShadow: '0 6px 16px rgba(107, 76, 59, 0.35)',
+                backgroundColor: COLORS.accentDark,
+                boxShadow: '0 6px 16px rgba(107, 127, 94, 0.35)',
                 transform: 'translateY(-2px)',
               },
               transition: `all ${TRANSITIONS.normal} ease`,

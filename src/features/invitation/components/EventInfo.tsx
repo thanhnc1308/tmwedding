@@ -108,7 +108,7 @@ export default function EventInfo({
         {/* Events Grid */}
         <Grid container spacing={4}>
           {events.map((event, index) => (
-            <Grid size={{ xs: 12, md: 6 }} key={event.id}>
+            <Grid size={{ xs: 12, md: 12 }} key={event.id}>
               <ScrollReveal delay={index * 0.2}>
                 <Card
                   sx={{
