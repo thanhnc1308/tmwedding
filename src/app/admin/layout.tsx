@@ -39,7 +39,7 @@ export default function AdminLayout({
             </div>
             <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
               <div className='flex items-center justify-center space-x-4 text-white cursor-pointer'>
-                <Link href='/'>tcnguyen</Link>
+                <Link href='/'>tmwedding</Link>
               </div>
               <div className='hidden sm:ml-6 sm:block'>
                 <div className='flex space-x-4'>

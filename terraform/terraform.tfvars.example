@@ -2,12 +2,12 @@
 mongodbatlas_public_key  = "TODO"
 mongodbatlas_private_key = "TODO"
 
-project_name          = "tcnguyen"
+project_name          = "tmwedding"
 mongodbatlas_username = "TODO"
 mongodbatlas_password = "TODO"
-application           = "tcnguyen-cluster"
+application           = "tmwedding-cluster"
 environment           = "dev"
-cluster_name          = "tcnguyen"
+cluster_name          = "tmwedding"
 
 region_configs = [{
   provider_name = "TENANT" # only TENANT supports M0 instance size
@@ -23,13 +23,13 @@ region_configs = [{
 
 roles = [{
   "role_name"     = "readWrite",
-  "database_name" = "tcnguyen"
+  "database_name" = "tmwedding"
   }, {
   "role_name" : "read",
-  "database_name" : "tcnguyen"
+  "database_name" : "tmwedding"
 }]
 
 scope = [{
-  name = "tcnguyen",
+  name = "tmwedding",
   type = "CLUSTER"
 }]

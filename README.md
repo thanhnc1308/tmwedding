@@ -1,4 +1,4 @@
-# tcnguyen
+# tmwedding
 
 ## Run
 
@@ -10,9 +10,9 @@ npm run dev
 
 - npm run build
 
-- docker build -t tcnguyen:v1 .
+- docker build -t tmwedding:v1 .
 
-- docker run -p 3000:3000 tcnguyen:v1
+- docker run -p 3000:3000 tmwedding:v1
 
 ## Deploy MongoDB Atlas
 

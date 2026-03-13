@@ -13,7 +13,7 @@ interface WeddingBannerProps {
 }
 
 export default function WeddingBanner({
-  backgroundImage = '/images/wedding-bg.JPG',
+  backgroundImage = '/images/banner-bg-1.JPG',
   groomPhoto = '/images/wedding-bg.JPG',
   bridePhoto = '/images/wedding-bg.JPG',
 }: WeddingBannerProps) {

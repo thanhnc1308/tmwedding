@@ -6,7 +6,7 @@ export default function Home() {
       <main className='w-full flex flex-col gap-8 row-start-2 items-center sm:items-start'>
         <nav className='w-full bg-gray-800'>
           <div className='flex mx-auto items-center justify-between max-w-7xl px-2 sm:px-6 lg:px-8'>
-            <div className='flex text-white'>tcnguyen</div>
+            <div className='flex text-white'>tmwedding</div>
             <div className='flex'>
               <ProfileDropdown />
             </div>
