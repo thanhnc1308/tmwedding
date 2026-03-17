@@ -54,8 +54,8 @@ const UserSchema = z.object({
     .optional(),
   role: z.string(),
 });
-const CreateGuestSchema = UserSchema.omit({ id: true });
-const UpdateGuestSchema = UserSchema.omit({ id: true });
+const CreateUserSchema = UserSchema.omit({ id: true });
+const UpdateUserSchema = UserSchema.omit({ id: true });
 
 type CreateUserRequest = {
   name: string;
@@ -66,7 +66,7 @@ type CreateUserRequest = {
 };
 
 const createUser = async (user: CreateUserRequest) => {
-  const validatedFields = CreateGuestSchema.safeParse(user);
+  const validatedFields = CreateUserSchema.safeParse(user);
 
   if (!validatedFields.success) {
     return {
@@ -92,7 +92,7 @@ type UpdateUserRequest = {
 };
 
 const updateUserById = async (userId: string, newUser: UpdateUserRequest) => {
-  const validatedFields = UpdateGuestSchema.safeParse(newUser);
+  const validatedFields = UpdateUserSchema.safeParse(newUser);
 
   if (!validatedFields.success) {
     return {

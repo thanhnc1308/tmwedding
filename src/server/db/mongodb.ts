@@ -30,6 +30,9 @@ async function dbConnect() {
 }
 
 // Auto-connect on module load
-dbConnect();
+dbConnect().catch((err) => {
+  console.error('Failed to connect to MongoDB on startup:', err);
+  globalWithMongoose.mongooseConnection = undefined;
+});
 
 export default dbConnect;

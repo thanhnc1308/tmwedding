@@ -1,11 +1,22 @@
+import { auth } from '@/auth';
 import guestModel from '@/server/db/models/guest.model';
 import { GuestConfirmationStatus, GuestSource } from '@/types/guest';
 import { hash } from '@/utils';
+import { getUserRoleFromEmail } from '@/utils/auth';
+import { UserRole } from '@/types/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import Papa from 'papaparse';
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
+    if (
+      !session?.user?.email ||
+      getUserRoleFromEmail(session.user.email) !== UserRole.Admin
+    ) {
+      return NextResponse.json('Forbidden', { status: 403 });
+    }
+
     const data = await req.formData();
     const file = data.get('file') as File;
 

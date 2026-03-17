@@ -1,9 +1,13 @@
 'use server';
 
+import { auth } from '@/auth';
 import invitationResponseModel from '@/server/db/models/invitation-response.model';
 import { PaginationRequest } from '@/types/pagination';
+import { UserRole } from '@/types/auth';
+import { getUserRoleFromEmail } from '@/utils/auth';
 import { SortOrder } from 'mongoose';
 import { revalidatePath } from 'next/cache';
+import { escapeRegex } from './utils';
 
 export interface InvitationResponseData {
   _id: string;
@@ -26,8 +30,8 @@ const _buildFilter = (query?: string) => {
 
   return {
     $or: [
-      { name: { $regex: query, $options: 'i' } },
-      { message: { $regex: query, $options: 'i' } },
+      { name: { $regex: escapeRegex(query), $options: 'i' } },
+      { message: { $regex: escapeRegex(query), $options: 'i' } },
     ],
   };
 };
@@ -96,6 +100,14 @@ export const paginateInvitationResponses = async ({
 const listPagePath = '/admin/invitation-responses';
 
 export const deleteInvitationResponseById = async (id: string | null) => {
+  const session = await auth();
+  if (
+    !session?.user?.email ||
+    getUserRoleFromEmail(session.user.email) !== UserRole.Admin
+  ) {
+    return { message: 'Unauthorized' };
+  }
+
   if (!id) {
     return;
   }

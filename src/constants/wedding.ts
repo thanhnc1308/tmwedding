@@ -2,7 +2,7 @@ export const GROOM_NAME = 'Thành';
 export const BRIDE_NAME = 'Mến';
 export const CEREMONY_DATE = '2026-04-05 15:00:00';
 export const QR_CODE_GROOM = '/images/qr-groom.jpg';
-export const QR_CODE_BRIDE = '/images/qr-groom.jpg';
+export const QR_CODE_BRIDE = '/images/qr-bride.jpg';
 
 export const BANK_ACCOUNTS = [
   {

@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+import Image from 'next/image';
 import { BRIDE_NAME, GROOM_NAME, CEREMONY_DATE } from '@/constants/wedding';
 import { FONTS } from '../constants/design';
 import CountdownTimer from './CountdownTimer';
@@ -65,6 +66,7 @@ export default function WeddingBanner({
             {/* Groom photo */}
             <Box
               sx={{
+                position: 'relative',
                 width: { xs: 130, sm: 160 },
                 height: { xs: 170, sm: 210 },
                 borderRadius: '50% 50% 50% 50% / 55% 55% 45% 45%',
@@ -73,22 +75,20 @@ export default function WeddingBanner({
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
               }}
             >
-              <Box
-                component='img'
+              <Image
                 src={groomPhoto}
                 alt={GROOM_NAME}
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: '30% center',
-                }}
+                fill
+                sizes='(max-width: 600px) 130px, 160px'
+                style={{ objectFit: 'cover', objectPosition: '30% center' }}
+                priority
               />
             </Box>
 
             {/* Bride photo */}
             <Box
               sx={{
+                position: 'relative',
                 width: { xs: 130, sm: 160 },
                 height: { xs: 170, sm: 210 },
                 borderRadius: '50% 50% 50% 50% / 55% 55% 45% 45%',
@@ -97,16 +97,13 @@ export default function WeddingBanner({
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
               }}
             >
-              <Box
-                component='img'
+              <Image
                 src={bridePhoto}
                 alt={BRIDE_NAME}
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: '70% center',
-                }}
+                fill
+                sizes='(max-width: 600px) 130px, 160px'
+                style={{ objectFit: 'cover', objectPosition: '70% center' }}
+                priority
               />
             </Box>
           </Box>

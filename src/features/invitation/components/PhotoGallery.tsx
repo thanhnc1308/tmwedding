@@ -142,7 +142,7 @@ export default function PhotoGallery({
                 transform: `translateX(-${currentIndex * 100}%)`,
               }}
             >
-              {photos.map((photo) => (
+              {photos.map((photo, index) => (
                 <Box
                   key={photo.id}
                   sx={{
@@ -159,6 +159,8 @@ export default function PhotoGallery({
                     height={photo.height}
                     sizes='(max-width: 600px) 100vw, 600px'
                     style={{ width: '100%', height: 'auto' }}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    priority={index === 0}
                   />
                 </Box>
               ))}

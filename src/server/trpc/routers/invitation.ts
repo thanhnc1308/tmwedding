@@ -1,8 +1,10 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { router, publicProcedure } from '../trpc';
 import InvitationResponseModel from '@/server/db/models/invitation-response.model';
 import GuestModel from '@/server/db/models/guest.model';
 import { GuestConfirmationStatus } from '@/types/guest';
+import { checkRateLimit } from '@/server/utils/rate-limit';
 
 interface InvitationResponseLean {
   _id: string;
@@ -14,7 +16,7 @@ interface InvitationResponseLean {
 const submitResponseSchema = z.object({
   guestId: z.string().optional(),
   name: z.string().min(1, 'Name is required').max(100),
-  numberOfGuests: z.number().min(1, 'At least 1 guest is required'),
+  numberOfGuests: z.number().min(1, 'At least 1 guest is required').max(20, 'Maximum 20 guests'),
   message: z.string().max(1000).optional(),
 });
 
@@ -28,6 +30,14 @@ export const invitationRouter = router({
     .input(submitResponseSchema)
     .mutation(async ({ input }) => {
       const { guestId, name, numberOfGuests, message } = input;
+
+      const rateLimitKey = guestId || name;
+      if (!checkRateLimit(rateLimitKey)) {
+        throw new TRPCError({
+          code: 'TOO_MANY_REQUESTS',
+          message: 'Too many submissions. Please try again later.',
+        });
+      }
 
       let response;
 

@@ -26,6 +26,7 @@ const allison = Allison({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-allison',
 });
 
 const dancingScript = Dancing_Script({
@@ -51,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${allison} ${cormorantGaramond.variable} ${dancingScript.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${allison.variable} ${cormorantGaramond.variable} ${dancingScript.variable} antialiased`}
         suppressHydrationWarning
       >
         <AppRouterCacheProvider>

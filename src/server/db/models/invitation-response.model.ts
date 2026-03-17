@@ -35,6 +35,10 @@ const InvitationResponseSchema = new mongoose.Schema<InvitationResponse>(
   },
 );
 
+InvitationResponseSchema.index({ createdAt: -1 });
+InvitationResponseSchema.index({ guestId: 1 }, { sparse: true });
+InvitationResponseSchema.index({ message: 1, createdAt: -1 });
+
 export default mongoose.models.InvitationResponse ||
   mongoose.model<InvitationResponse>(
     'InvitationResponse',

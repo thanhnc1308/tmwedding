@@ -49,3 +49,4 @@ terraform/terraform.tfstate.backup
 .wrangler
 
 design/
+claude/

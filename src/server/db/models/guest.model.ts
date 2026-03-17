@@ -68,5 +68,10 @@ const GuestSchema = new mongoose.Schema<Guest>({
   },
 });
 
+GuestSchema.index({ name: 1 });
+GuestSchema.index({ guestSource: 1 });
+GuestSchema.index({ status: 1 });
+GuestSchema.index({ invited: 1 });
+
 export default mongoose.models.Guest ||
   mongoose.model<Guest>('Guest', GuestSchema);

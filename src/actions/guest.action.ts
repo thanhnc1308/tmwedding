@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import guestModel from '@/server/db/models/guest.model';
 import {
   Guest,
@@ -10,11 +11,14 @@ import {
   GuestGender,
 } from '@/types/guest';
 import { PaginationRequest } from '@/types/pagination';
+import { UserRole } from '@/types/auth';
 import { hash } from '@/utils';
+import { getUserRoleFromEmail } from '@/utils/auth';
 import { SortOrder } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { escapeRegex } from './utils';
 
 const _buildFilter = (query?: string) => {
   if (!query) {
@@ -22,8 +26,18 @@ const _buildFilter = (query?: string) => {
   }
 
   return {
-    name: { $regex: query, $options: 'i' },
+    name: { $regex: escapeRegex(query), $options: 'i' },
   };
+};
+
+const requireAdmin = async () => {
+  const session = await auth();
+  if (
+    !session?.user?.email ||
+    getUserRoleFromEmail(session.user.email) !== UserRole.Admin
+  ) {
+    throw new Error('Unauthorized');
+  }
 };
 
 const _buildSort = (sort?: string) => {
@@ -171,6 +185,8 @@ const generateGuestId = (guest: Guest) => {
 };
 
 const createGuest = async (prevState: GuestState, formData: FormData) => {
+  await requireAdmin();
+
   const validatedFields = CreateGuestSchema.safeParse({
     name: formData.get('name'),
     memberCount: formData.get('memberCount'),
@@ -209,6 +225,8 @@ const updateGuestById = async (
   prevState: GuestState,
   formData: FormData,
 ) => {
+  await requireAdmin();
+
   const validatedFields = UpdateGuestSchema.safeParse({
     name: formData.get('name'),
     memberCount: formData.get('memberCount'),
@@ -240,6 +258,8 @@ const updateGuestById = async (
 };
 
 const deleteGuestById = async (guestId: string | null) => {
+  await requireAdmin();
+
   if (!guestId) {
     return;
   }
@@ -247,9 +267,9 @@ const deleteGuestById = async (guestId: string | null) => {
   try {
     await guestModel.findByIdAndDelete(guestId);
   } catch (e) {
-    console.error('updateGuestById', e);
+    console.error('deleteGuestById', e);
     return {
-      message: 'Internal Server Error. Failed to Update Guest.',
+      message: 'Internal Server Error. Failed to Delete Guest.',
     };
   }
 

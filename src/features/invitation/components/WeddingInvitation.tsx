@@ -1,17 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Banner from '@/features/invitation/components/Banner';
 import InvitationResponse from '@/features/invitation/components/InvitationResponse';
 import Footer from '@/features/invitation/components/Footer';
 import EventInfo from '@/features/invitation/components/EventInfo';
 import Envelop from '@/features/invitation/components/Envelop';
 import Timeline from '@/features/invitation/components/Timeline';
-import PhotoGallery from '@/features/invitation/components/PhotoGallery';
 import GiftMessage from '@/features/invitation/components/GiftMessage';
-import WeddingMonetaryGift from '@/features/invitation/components/WeddingMonetaryGift';
-import WeddingGuestBook from '@/features/invitation/components/WeddingGuestBook';
 import InvitationHeading from '@/features/invitation/components/InvitationHeading';
+
+const PhotoGallery = dynamic(() => import('./PhotoGallery'), { ssr: false });
+const WeddingMonetaryGift = dynamic(() => import('./WeddingMonetaryGift'), { ssr: false });
+const WeddingGuestBook = dynamic(() => import('./WeddingGuestBook'), { ssr: false });
 import MusicToggle from '@/features/invitation/components/MusicToggle';
 import { Box, Fade, Grow } from '@mui/material';
 import { Guest, GuestSource } from '@/types/guest';
@@ -31,18 +33,21 @@ export default function WeddingInvitation({
     '/audio/bg-music.mp3',
   );
 
-  const handleOpenInvitation = () => {
+  const handleOpenInvitation = useCallback(() => {
     setIsInvitationOpened(true);
     play();
-  };
+  }, [play]);
+
+  const contextValue = useMemo(
+    () => ({ isInvitationOpened, handleOpenInvitation }),
+    [isInvitationOpened, handleOpenInvitation],
+  );
 
   const shouldShowEnvelop = guest !== null && !isInvitationOpened;
   const shouldShowContent = guest === null || isInvitationOpened;
 
   return (
-    <WeddingInvitationContext.Provider
-      value={{ isInvitationOpened, handleOpenInvitation }}
-    >
+    <WeddingInvitationContext.Provider value={contextValue}>
       <Fade in={shouldShowEnvelop} timeout={800} unmountOnExit>
         <Box>
           <Envelop guest={guest} />
