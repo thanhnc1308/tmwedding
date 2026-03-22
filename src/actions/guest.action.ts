@@ -277,6 +277,21 @@ const toggleGuestInvited = async (guestId: string) => {
   revalidatePath(listPagePath);
 };
 
+const clearGuestList = async () => {
+  await requireAdmin();
+
+  try {
+    await guestModel.deleteMany({});
+  } catch (e) {
+    console.error('clearGuestList', e);
+    return {
+      message: 'Internal Server Error. Failed to clear guest list.',
+    };
+  }
+
+  revalidatePath(listPagePath);
+};
+
 const deleteGuestById = async (guestId: string | null) => {
   await requireAdmin();
 
@@ -303,5 +318,6 @@ export {
   createGuest,
   updateGuestById,
   deleteGuestById,
+  clearGuestList,
   toggleGuestInvited,
 };
