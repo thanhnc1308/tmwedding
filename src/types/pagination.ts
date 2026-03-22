@@ -3,4 +3,5 @@ export interface PaginationRequest {
   sortString?: string;
   currentPage?: number;
   rowsPerPage?: number;
+  filters?: Record<string, string>;
 }

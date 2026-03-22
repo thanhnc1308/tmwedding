@@ -1,4 +1,5 @@
 import { paginateGuestList } from '@/actions/guest.action';
+import FilterDropdown from '@/components/common/table/FilterDropdown';
 import Search from '@/components/common/table/Search';
 import Table, {
   TableColumn,
@@ -92,6 +93,9 @@ export default async function GuestListPage(props: {
     sort?: string;
     page?: string;
     rowsPerPage?: string;
+    guestSource?: string;
+    invited?: string;
+    status?: string;
   }>;
 }) {
   const searchParams = await props.searchParams;
@@ -99,6 +103,11 @@ export default async function GuestListPage(props: {
   const sort = searchParams?.sort || '';
   const currentPage = Number(searchParams?.page) || 1;
   const rowsPerPage = Number(searchParams?.rowsPerPage) || 10;
+
+  const filters: Record<string, string> = {};
+  if (searchParams?.guestSource) filters.guestSource = searchParams.guestSource;
+  if (searchParams?.invited) filters.invited = searchParams.invited;
+  if (searchParams?.status) filters.status = searchParams.status;
 
   const {
     data: rows,
@@ -110,6 +119,7 @@ export default async function GuestListPage(props: {
     sortString: sort,
     currentPage,
     rowsPerPage,
+    filters,
   });
 
   return (
@@ -124,6 +134,33 @@ export default async function GuestListPage(props: {
             <Search placeholder='Search guest...' />
           </Suspense>
         </div>
+        <Suspense>
+          <FilterDropdown
+            label='Source'
+            paramKey='guestSource'
+            options={[
+              { value: GuestSource.Groom, label: 'Groom' },
+              { value: GuestSource.Bride, label: 'Bride' },
+            ]}
+          />
+          <FilterDropdown
+            label='Invited'
+            paramKey='invited'
+            options={[
+              { value: 'true', label: 'Yes' },
+              { value: 'false', label: 'No' },
+            ]}
+          />
+          <FilterDropdown
+            label='Status'
+            paramKey='status'
+            options={[
+              { value: GuestConfirmationStatus.Pending, label: 'Pending' },
+              { value: GuestConfirmationStatus.Accepted, label: 'Accepted' },
+              { value: GuestConfirmationStatus.Declined, label: 'Declined' },
+            ]}
+          />
+        </Suspense>
         <GuestImport />
         <ClearGuestList />
         <Link

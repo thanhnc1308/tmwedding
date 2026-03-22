@@ -20,14 +20,24 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { escapeRegex } from './utils';
 
-const _buildFilter = (query?: string) => {
-  if (!query) {
-    return {};
+const _buildFilter = (query?: string, filters?: Record<string, string>) => {
+  const filter: Record<string, unknown> = {};
+
+  if (query) {
+    filter.name = { $regex: escapeRegex(query), $options: 'i' };
   }
 
-  return {
-    name: { $regex: escapeRegex(query), $options: 'i' },
-  };
+  if (filters?.guestSource) {
+    filter.guestSource = filters.guestSource;
+  }
+  if (filters?.invited) {
+    filter.invited = filters.invited === 'true';
+  }
+  if (filters?.status) {
+    filter.status = filters.status;
+  }
+
+  return filter;
 };
 
 const requireAdmin = async () => {
@@ -65,9 +75,10 @@ const paginateGuestList = async ({
   sortString,
   currentPage = 1,
   rowsPerPage = 10,
+  filters,
 }: PaginationRequest): Promise<GuestListPaginationResponse> => {
   try {
-    const filter = _buildFilter(queryString);
+    const filter = _buildFilter(queryString, filters);
     const sort = _buildSort(sortString);
     const skip = (currentPage - 1) * rowsPerPage;
 
