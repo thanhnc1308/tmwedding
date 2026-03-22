@@ -177,6 +177,7 @@ export default function PhotoGallery({
       id='gallery'
       sx={{
         py: { xs: 3, md: 3 },
+        pt: { xs: 1, md: 1 },
         backgroundColor: COLORS.bgCream,
         overflow: 'hidden',
       }}
@@ -245,6 +246,7 @@ export default function PhotoGallery({
             <>
               <IconButton
                 onClick={goPrev}
+                onTouchStart={(e) => e.stopPropagation()}
                 aria-label='Previous photo'
                 sx={{
                   position: 'absolute',
@@ -267,6 +269,7 @@ export default function PhotoGallery({
               </IconButton>
               <IconButton
                 onClick={goNext}
+                onTouchStart={(e) => e.stopPropagation()}
                 aria-label='Next photo'
                 sx={{
                   position: 'absolute',
