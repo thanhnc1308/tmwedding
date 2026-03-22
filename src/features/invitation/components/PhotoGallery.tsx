@@ -21,31 +21,45 @@ interface PhotoGalleryProps {
 
 const AUTOPLAY_INTERVAL = 4000;
 
-export default function PhotoGallery({
-  photos = [
-    {
-      id: '1',
-      src: '/images/wedding-bg.JPG',
-      alt: 'Wedding photo 1',
-      width: 4032,
-      height: 3024,
-    },
-    {
-      id: '2',
-      src: '/images/envelop.png',
-      alt: 'Wedding photo 2',
-      width: 1080,
-      height: 1080,
-    },
-    {
-      id: '3',
-      src: '/images/qr-groom.jpg',
-      alt: 'Wedding photo 3',
-      width: 1018,
-      height: 1116,
-    },
-  ],
-}: PhotoGalleryProps) {
+const PHOTOS: WeddingPhoto[] = [
+  {
+    id: '1',
+    src: '/images/gallery/1-chibi.jpg',
+    alt: '1 chibi',
+    width: 842,
+    height: 1264,
+  },
+  {
+    id: '2',
+    src: '/images/gallery/2-proposal.JPG',
+    alt: '2 proposal',
+    width: 4032,
+    height: 3024,
+  },
+  {
+    id: '3',
+    src: '/images/gallery/3-engagement-ceremony-1.JPG',
+    alt: '3 engagement ceremony 1',
+    width: 2560,
+    height: 1920,
+  },
+  {
+    id: '4',
+    src: '/images/gallery/4-engagement-ceremony-2.JPG',
+    alt: '4 engagement ceremony 2',
+    width: 1920,
+    height: 2560,
+  },
+  {
+    id: '5',
+    src: '/images/gallery/5-marriage-registration.JPG',
+    alt: '5 marriage registration',
+    width: 1536,
+    height: 2048,
+  },
+];
+
+export default function PhotoGallery({ photos = PHOTOS }: PhotoGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
@@ -133,11 +147,14 @@ export default function PhotoGallery({
               overflow: 'hidden',
               borderRadius: 3,
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+              aspectRatio: `${photos[currentIndex].width} / ${photos[currentIndex].height}`,
+              transition: 'aspect-ratio 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
             <Box
               sx={{
                 display: 'flex',
+                height: '100%',
                 transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: `translateX(-${currentIndex * 100}%)`,
               }}
@@ -147,18 +164,15 @@ export default function PhotoGallery({
                   key={photo.id}
                   sx={{
                     flex: '0 0 100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    position: 'relative',
                   }}
                 >
                   <Image
                     src={photo.src}
                     alt={photo.alt}
-                    width={photo.width}
-                    height={photo.height}
+                    fill
                     sizes='(max-width: 600px) 100vw, 600px'
-                    style={{ width: '100%', height: 'auto' }}
+                    style={{ objectFit: 'cover' }}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     priority={index === 0}
                   />

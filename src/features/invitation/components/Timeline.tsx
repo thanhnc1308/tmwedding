@@ -3,19 +3,32 @@
 import { Box, Typography, Container, Divider } from '@mui/material';
 import { COLORS, FONTS, sectionHeadingStyle } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import { GuestSource } from '@/types/guest';
 
 interface TimelineItem {
   time: string;
   title: string;
 }
 
-const timelineItems: TimelineItem[] = [
-  { time: '9h30', title: 'Đón khách' },
-  { time: '10h', title: 'Bữa trưa vui vẻ' },
-  { time: '15h', title: 'Lễ vu quy' },
+const groomTimelineItems: TimelineItem[] = [
+  { time: '10h', title: 'Đón khách' },
+  { time: '11h', title: 'Bữa trưa vui vẻ' },
+  { time: '15h', title: 'Lễ thành hôn' },
 ];
 
-export default function Timeline() {
+const brideTimelineItems: TimelineItem[] = [
+  { time: '9h30', title: 'Đón khách' },
+  { time: '10h', title: 'Bữa trưa vui vẻ' },
+  { time: '13h30', title: 'Lễ vu quy' },
+];
+
+function getTimelineItems(side: GuestSource): TimelineItem[] {
+  return side === GuestSource.Groom ? groomTimelineItems : brideTimelineItems;
+}
+
+export default function Timeline({ side }: { side: GuestSource }) {
+  const timelineItems = getTimelineItems(side);
+
   return (
     <Box
       id='timeline'

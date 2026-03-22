@@ -15,8 +15,8 @@ interface WeddingBannerProps {
 
 export default function WeddingBanner({
   backgroundImage = '/images/banner-bg-1.JPG',
-  groomPhoto = '/images/wedding-bg.JPG',
-  bridePhoto = '/images/wedding-bg.JPG',
+  groomPhoto = '/images/qr-groom.jpg',
+  bridePhoto = '/images/qr-bride.jpg',
 }: WeddingBannerProps) {
   return (
     <Box sx={{ position: 'relative', overflow: 'hidden' }}>

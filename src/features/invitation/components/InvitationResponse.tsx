@@ -14,8 +14,6 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { Guest } from '@/types/guest';
-import { getGuestPronoun } from '../helpers/guest';
-import { capitalizeFirstLetter } from '@/utils';
 import { trpc } from '@/utils/trpc';
 import toast from 'react-hot-toast';
 import { COLORS, FONTS, TRANSITIONS } from '../constants/design';
@@ -85,7 +83,6 @@ export default function InvitationResponse({
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const isKnownGuest = guest !== null;
-  const guestPronoun = getGuestPronoun(guest);
 
   const utils = trpc.useUtils();
 
@@ -183,9 +180,7 @@ export default function InvitationResponse({
               textAlign: 'center',
             }}
           >
-            {isKnownGuest
-              ? `Thân mời ${capitalizeFirstLetter(guestPronoun)} ${name}`
-              : 'Thân mời bạn'}
+            {isKnownGuest ? `Thân mời ${name}` : 'Thân mời bạn'}
           </Typography>
 
           <Box component='form' onSubmit={handleSubmit}>

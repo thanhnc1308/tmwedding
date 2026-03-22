@@ -69,7 +69,7 @@ export default function WeddingInvitation({
           <Banner />
           <InvitationHeading />
           <EventInfo side={resolvedSide} />
-          <Timeline />
+          <Timeline side={resolvedSide} />
           <PhotoGallery />
           <GiftMessage />
           <WeddingMonetaryGift />
