@@ -100,7 +100,12 @@ export default async function GuestListPage(props: {
   const currentPage = Number(searchParams?.page) || 1;
   const rowsPerPage = Number(searchParams?.rowsPerPage) || 10;
 
-  const { data: rows, total } = await paginateGuestList({
+  const {
+    data: rows,
+    total,
+    groomMemberCount,
+    brideMemberCount,
+  } = await paginateGuestList({
     queryString: query,
     sortString: sort,
     currentPage,
@@ -109,7 +114,11 @@ export default async function GuestListPage(props: {
 
   return (
     <div className='w-full px-5'>
-      <div className='mt-4 flex items-center justify-end gap-2 md:mt-8'>
+      <div className='mt-4 flex items-center gap-4 text-sm text-gray-600 md:mt-8'>
+        <span>Groom: {groomMemberCount}</span>
+        <span>Bride: {brideMemberCount}</span>
+      </div>
+      <div className='mt-2 flex items-center justify-end gap-2'>
         <div className='w-100'>
           <Suspense>
             <Search placeholder='Search guest...' />

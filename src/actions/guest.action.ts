@@ -71,7 +71,7 @@ const paginateGuestList = async ({
     const sort = _buildSort(sortString);
     const skip = (currentPage - 1) * rowsPerPage;
 
-    const [guests, total] = await Promise.all([
+    const [guests, total, memberCountResult] = await Promise.all([
       guestModel
         .find(filter)
         .sort(sort)
@@ -79,7 +79,17 @@ const paginateGuestList = async ({
         .limit(rowsPerPage)
         .lean<LeanGuest[]>(),
       guestModel.countDocuments(filter).exec(),
+      guestModel.aggregate([
+        { $match: filter },
+        { $group: { _id: '$guestSource', total: { $sum: '$memberCount' } } },
+      ]),
     ]);
+    const memberCountBySource: Record<string, number> = {};
+    for (const entry of memberCountResult) {
+      memberCountBySource[entry._id] = entry.total;
+    }
+    const groomMemberCount = memberCountBySource[GuestSource.Groom] ?? 0;
+    const brideMemberCount = memberCountBySource[GuestSource.Bride] ?? 0;
 
     // Convert to plain objects for client components with defaults for missing fields
     const data: Guest[] = guests.map((g) => ({
@@ -98,12 +108,16 @@ const paginateGuestList = async ({
 
     return {
       total,
+      groomMemberCount,
+      brideMemberCount,
       data,
     };
   } catch (error) {
     console.error('paginateGuestList', error);
     return {
       total: 0,
+      groomMemberCount: 0,
+      brideMemberCount: 0,
       data: [],
     };
   }

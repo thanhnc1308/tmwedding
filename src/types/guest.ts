@@ -34,4 +34,6 @@ export type Guest = {
 export type GuestListPaginationResponse = {
   data: Guest[];
   total: number;
+  groomMemberCount: number;
+  brideMemberCount: number;
 };
