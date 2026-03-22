@@ -44,7 +44,7 @@ export default function Timeline({ side }: { side: GuestSource }) {
         <ScrollReveal>
           <Box sx={{ textAlign: 'center', mb: 2 }}>
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-              Mốc thời gian
+              Lịch trình nghi lễ
             </Typography>
           </Box>
         </ScrollReveal>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { BRIDE_NAME, GROOM_NAME, CEREMONY_DATE } from '@/constants/wedding';
 import { FONTS } from '../constants/design';
 import CountdownTimer from './CountdownTimer';
@@ -15,8 +15,8 @@ interface WeddingBannerProps {
 
 export default function WeddingBanner({
   backgroundImage = '/images/banner-bg-1.JPG',
-  groomPhoto = '/images/groom-avatar.png',
-  bridePhoto = '/images/bride-avatar.png',
+  // groomPhoto = '/images/groom-avatar.png',
+  // bridePhoto = '/images/bride-avatar.png',
 }: WeddingBannerProps) {
   return (
     <Box sx={{ position: 'relative', overflow: 'hidden' }}>
@@ -25,10 +25,10 @@ export default function WeddingBanner({
         sx={{
           position: 'relative',
           backgroundImage: `url('${backgroundImage}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          pb: 12,
-          pt: 6,
+          backgroundSize: { xs: '220%', sm: 'cover' },
+          backgroundPosition: { xs: '55% center', sm: 'center' },
+          pb: { xs: 6, sm: 12 },
+          pt: { xs: 3, sm: 6 },
         }}
       >
         <Box
@@ -47,14 +47,14 @@ export default function WeddingBanner({
               color: '#FAFAF8',
               fontSize: { xs: '2.5rem', sm: '3rem' },
               fontWeight: 400,
-              mb: 6,
+              mb: { xs: 1, sm: 0 },
             }}
           >
             Lễ thành hôn
           </Typography>
 
           {/* Couple photos */}
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -62,9 +62,9 @@ export default function WeddingBanner({
               mb: 4,
               px: 2,
             }}
-          >
-            {/* Groom photo */}
-            <Box
+          > */}
+          {/* Groom photo */}
+          {/* <Box
               sx={{
                 position: 'relative',
                 width: { xs: 130, sm: 160 },
@@ -83,10 +83,10 @@ export default function WeddingBanner({
                 style={{ objectFit: 'cover', objectPosition: '30% center' }}
                 priority
               />
-            </Box>
+            </Box> */}
 
-            {/* Bride photo */}
-            <Box
+          {/* Bride photo */}
+          {/* <Box
               sx={{
                 position: 'relative',
                 width: { xs: 130, sm: 160 },
@@ -105,8 +105,8 @@ export default function WeddingBanner({
                 style={{ objectFit: 'cover', objectPosition: '70% center' }}
                 priority
               />
-            </Box>
-          </Box>
+            </Box> */}
+          {/* </Box> */}
 
           {/* Names */}
           <Box
@@ -121,8 +121,8 @@ export default function WeddingBanner({
               sx={{
                 fontFamily: FONTS.script,
                 color: '#FAFAF8',
-                fontSize: { xs: '1.5rem', sm: '3.5rem' },
-                fontWeight: 500,
+                fontSize: { xs: '3rem', sm: '5.5rem' },
+                fontWeight: 600,
               }}
             >
               {GROOM_NAME}
@@ -131,7 +131,7 @@ export default function WeddingBanner({
               sx={{
                 fontFamily: FONTS.script,
                 color: 'rgba(250, 250, 248, 0.6)',
-                fontSize: { xs: '1.5rem', sm: '3.5rem' },
+                fontSize: { xs: '2rem', sm: '5.5rem' },
                 fontWeight: 400,
                 alignSelf: 'center',
               }}
@@ -142,8 +142,8 @@ export default function WeddingBanner({
               sx={{
                 fontFamily: FONTS.script,
                 color: '#FAFAF8',
-                fontSize: { xs: '1.5rem', sm: '3.5rem' },
-                fontWeight: 500,
+                fontSize: { xs: '3rem', sm: '5.5rem' },
+                fontWeight: 600,
               }}
             >
               {BRIDE_NAME}

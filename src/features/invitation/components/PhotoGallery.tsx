@@ -154,6 +154,7 @@ export default function PhotoGallery({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
     setIsPaused(true);
   };
 
@@ -246,7 +247,6 @@ export default function PhotoGallery({
             <>
               <IconButton
                 onClick={goPrev}
-                onTouchStart={(e) => e.stopPropagation()}
                 aria-label='Previous photo'
                 sx={{
                   position: 'absolute',
@@ -269,7 +269,6 @@ export default function PhotoGallery({
               </IconButton>
               <IconButton
                 onClick={goNext}
-                onTouchStart={(e) => e.stopPropagation()}
                 aria-label='Next photo'
                 sx={{
                   position: 'absolute',
