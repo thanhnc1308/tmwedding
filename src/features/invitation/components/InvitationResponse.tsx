@@ -176,22 +176,6 @@ export default function InvitationResponse({
             {guestPronoun.toLowerCase()} một cách trọn vẹn nhất, hãy xác nhận sự
             có mặt của {guestPronoun.toLowerCase()} nhé.
             <br />
-            Trân trọng!
-          </Typography>
-
-          {/* Heading */}
-          <Typography
-            sx={{
-              fontFamily: FONTS.serif,
-              fontSize: { xs: '1.5rem', sm: '1.8rem' },
-              color: COLORS.textPrimary,
-              fontWeight: 700,
-              textAlign: 'center',
-            }}
-          >
-            {isKnownGuest
-              ? `Thân mời ${name}`
-              : `Thân mời ${guestPronoun.toLowerCase()}`}
           </Typography>
 
           <Box component='form' onSubmit={handleSubmit}>
@@ -231,8 +215,8 @@ export default function InvitationResponse({
                   fontFamily: FONTS.serif,
                 }}
               >
-                {guestPronoun} sẽ đến chia vui trong tiệc cưới của{' '}
-                {wePronoun.toLowerCase()} chứ?
+                {isKnownGuest ? `${name}` : `${guestPronoun.toLowerCase()}`} sẽ
+                đến chia vui trong tiệc cưới của {wePronoun.toLowerCase()} chứ?
               </Typography>
               <RadioGroup
                 value={attendance}

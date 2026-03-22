@@ -128,8 +128,7 @@ export default function EventInfo({
       {/* Time and Calendar section */}
       <Box
         sx={{
-          py: { xs: 1, md: 2 },
-          pt: '0 !important',
+          py: 0,
           px: 3,
           backgroundColor: COLORS.bgCream,
           textAlign: 'center',
@@ -143,6 +142,7 @@ export default function EventInfo({
               fontSize: { xs: '3.5rem', sm: '4.5rem' },
               color: COLORS.textPrimary,
               fontWeight: 700,
+              lineHeight: 0.85,
             }}
           >
             {event.time}
