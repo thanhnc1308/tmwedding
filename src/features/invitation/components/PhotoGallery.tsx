@@ -121,6 +121,8 @@ export default function PhotoGallery({
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
@@ -145,12 +147,23 @@ export default function PhotoGallery({
   );
 
   useEffect(() => {
-    if (isPaused || photos.length <= 1) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || !isInView || photos.length <= 1) return;
     autoplayRef.current = setInterval(goNext, AUTOPLAY_INTERVAL);
     return () => {
       if (autoplayRef.current) clearInterval(autoplayRef.current);
     };
-  }, [isPaused, goNext, photos.length]);
+  }, [isPaused, isInView, goNext, photos.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -175,6 +188,7 @@ export default function PhotoGallery({
 
   return (
     <Box
+      ref={sectionRef}
       id='gallery'
       sx={{
         py: { xs: 3, md: 3 },
