@@ -234,8 +234,8 @@ export default function PhotoGallery({
               overflow: 'hidden',
               borderRadius: 3,
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
-              aspectRatio: `${photos[currentIndex].width} / ${photos[currentIndex].height}`,
-              transition: 'aspect-ratio 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              aspectRatio: '2 / 3',
+              backgroundColor: COLORS.bgCream,
             }}
           >
             <Box
@@ -266,7 +266,7 @@ export default function PhotoGallery({
                         alt={photo.alt}
                         fill
                         sizes='(max-width: 600px) 100vw, 600px'
-                        style={{ objectFit: 'cover' }}
+                        style={{ objectFit: 'contain', borderRadius: 12 }}
                         priority={index === 0}
                       />
                     )}
