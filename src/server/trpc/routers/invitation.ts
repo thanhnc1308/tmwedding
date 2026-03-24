@@ -25,7 +25,7 @@ const submitResponseSchema = z.object({
 
 const getResponsesSchema = z.object({
   page: z.number().min(1).default(1),
-  limit: z.number().min(1).max(50).default(10),
+  limit: z.number().min(1).max(100).default(10),
 });
 
 export const invitationRouter = router({
@@ -81,19 +81,54 @@ export const invitationRouter = router({
       const { page, limit } = input;
       const skip = (page - 1) * limit;
 
-      const [responses, total] = await Promise.all([
-        InvitationResponseModel.find({ message: { $exists: true, $ne: '' } })
-          .sort({ createdAt: -1 })
-          .skip(skip)
-          .limit(limit)
-          .lean<InvitationResponseLean[]>(),
-        InvitationResponseModel.countDocuments({
-          message: { $exists: true, $ne: '' },
-        }),
+      const pinnedNames = ['Thành', 'CThanh Nguyen'];
+      const baseFilter = { message: { $exists: true, $ne: '' } };
+      const pinnedFilter = { ...baseFilter, name: { $in: pinnedNames } };
+      const unpinnedFilter = { ...baseFilter, name: { $nin: pinnedNames } };
+
+      if (page === 1) {
+        const [pinnedResponses, unpinnedResponses, total] = await Promise.all([
+          InvitationResponseModel.find(pinnedFilter)
+            .sort({ createdAt: -1 })
+            .lean<InvitationResponseLean[]>(),
+          InvitationResponseModel.find(unpinnedFilter)
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .lean<InvitationResponseLean[]>(),
+          InvitationResponseModel.countDocuments(baseFilter),
+        ]);
+
+        const responses = [...pinnedResponses, ...unpinnedResponses];
+
+        return {
+          data: responses.map((r) => ({
+            id: r._id.toString(),
+            name: r.name,
+            message: r.message || '',
+            createdAt: r.createdAt.toISOString(),
+          })),
+          total,
+          page,
+          totalPages: Math.ceil(total / limit),
+        };
+      }
+
+      const [pinnedCount, total] = await Promise.all([
+        InvitationResponseModel.countDocuments(pinnedFilter),
+        InvitationResponseModel.countDocuments(baseFilter),
       ]);
 
+      const unpinnedSkip = skip - pinnedCount;
+      const unpinnedResponses = await InvitationResponseModel.find(
+        unpinnedFilter,
+      )
+        .sort({ createdAt: -1 })
+        .skip(unpinnedSkip)
+        .limit(limit)
+        .lean<InvitationResponseLean[]>();
+
       return {
-        data: responses.map((r) => ({
+        data: unpinnedResponses.map((r) => ({
           id: r._id.toString(),
           name: r.name,
           message: r.message || '',

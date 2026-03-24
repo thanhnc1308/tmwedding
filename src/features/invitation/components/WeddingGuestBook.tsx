@@ -26,16 +26,30 @@ export default function WeddingGuestBook() {
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data, isLoading } = trpc.invitation.getResponses.useQuery({
     page: 1,
-    limit: 50,
+    limit: 100,
   });
 
   const wishes = data?.data ?? [];
+
+  const goNext = useCallback(() => {
+    setCurrentIndex((prev) =>
+      wishes.length === 0 ? 0 : (prev + 1) % wishes.length,
+    );
+  }, [wishes.length]);
+
+  const goPrev = useCallback(() => {
+    setCurrentIndex((prev) =>
+      wishes.length === 0 ? 0 : (prev - 1 + wishes.length) % wishes.length,
+    );
+  }, [wishes.length]);
 
   const goTo = useCallback(
     (index: number) => {
@@ -47,27 +61,31 @@ export default function WeddingGuestBook() {
     [wishes.length],
   );
 
-  const goNext = useCallback(
-    () => goTo(currentIndex + 1),
-    [currentIndex, goTo],
-  );
-  const goPrev = useCallback(
-    () => goTo(currentIndex - 1),
-    [currentIndex, goTo],
-  );
-
-  // Autoplay
+  // Track visibility with IntersectionObserver
   useEffect(() => {
-    if (isPaused || wishes.length <= 1) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.3 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Autoplay only when visible
+  useEffect(() => {
+    if (isPaused || !isVisible || wishes.length <= 1) return;
     autoplayRef.current = setInterval(goNext, AUTOPLAY_INTERVAL);
     return () => {
       if (autoplayRef.current) clearInterval(autoplayRef.current);
     };
-  }, [isPaused, goNext, wishes.length]);
+  }, [isPaused, isVisible, goNext, wishes.length]);
 
   // Touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
     setIsPaused(true);
   };
 
@@ -84,16 +102,9 @@ export default function WeddingGuestBook() {
     setTimeout(() => setIsPaused(false), 3000);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const month = t.months[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
-
   return (
     <Box
+      ref={sectionRef}
       id='guestbook'
       sx={{
         py: { xs: 4, md: 4 },
@@ -258,15 +269,6 @@ export default function WeddingGuestBook() {
                             >
                               {wish.name}
                             </Typography>
-                            <Typography
-                              sx={{
-                                color: COLORS.textSecondary,
-                                fontSize: '0.75rem',
-                                fontFamily: FONTS.serif,
-                              }}
-                            >
-                              {formatDate(wish.createdAt)}
-                            </Typography>
                           </Box>
                         </Box>
                       </Box>
@@ -279,7 +281,11 @@ export default function WeddingGuestBook() {
               {wishes.length > 1 && (
                 <>
                   <IconButton
-                    onClick={goPrev}
+                    onClick={() => {
+                      goPrev();
+                      setIsPaused(true);
+                      setTimeout(() => setIsPaused(false), 3000);
+                    }}
                     aria-label='Previous wish'
                     sx={{
                       position: 'absolute',
@@ -301,7 +307,11 @@ export default function WeddingGuestBook() {
                     <ArrowBackIos sx={{ fontSize: 16, ml: 0.5 }} />
                   </IconButton>
                   <IconButton
-                    onClick={goNext}
+                    onClick={() => {
+                      goNext();
+                      setIsPaused(true);
+                      setTimeout(() => setIsPaused(false), 3000);
+                    }}
                     aria-label='Next wish'
                     sx={{
                       position: 'absolute',
