@@ -6,6 +6,7 @@ import { BRIDE_NAME, GROOM_NAME, CEREMONY_DATE } from '@/constants/wedding';
 import { FONTS } from '../constants/design';
 import CountdownTimer from './CountdownTimer';
 import SaveTheDateButton from './SaveTheDateButton';
+import { useTranslation } from '@/i18n';
 
 interface WeddingBannerProps {
   backgroundImage?: string;
@@ -18,6 +19,8 @@ export default function WeddingBanner({
   // groomPhoto = '/images/groom-avatar.png',
   // bridePhoto = '/images/bride-avatar.png',
 }: WeddingBannerProps) {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ position: 'relative', overflow: 'hidden' }}>
       {/* Dark background section with photo */}
@@ -50,7 +53,7 @@ export default function WeddingBanner({
               mb: { xs: 1, sm: 0 },
             }}
           >
-            Lễ thành hôn
+            {t.banner.weddingCeremony}
           </Typography>
 
           {/* Couple photos */}
@@ -162,7 +165,7 @@ export default function WeddingBanner({
                 letterSpacing: '0.02em',
               }}
             >
-              VÀO LÚC
+              {t.banner.at}
             </Typography>
             <Typography
               sx={{
@@ -174,7 +177,7 @@ export default function WeddingBanner({
                 mb: 0.5,
               }}
             >
-              15:00 CHỦ NHẬT, NGÀY 05 THÁNG 04 NĂM 2026
+              {t.banner.dateTime}
             </Typography>
           </Box>
 

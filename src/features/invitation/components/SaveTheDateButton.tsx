@@ -2,9 +2,9 @@
 
 import { CEREMONY_DATE } from '@/constants/wedding';
 import { FONTS } from '../constants/design';
+import { useTranslation } from '@/i18n';
 
 interface SaveTheDateButtonProps {
-  eventTitle?: string;
   eventDescription?: string;
   eventLocation?: string;
   startDate?: Date;
@@ -12,12 +12,13 @@ interface SaveTheDateButtonProps {
 }
 
 export default function SaveTheDateButton({
-  eventTitle = 'Đám Cưới Thành Mến',
   eventDescription = '',
   eventLocation = '',
   startDate = new Date(CEREMONY_DATE),
   endDate = new Date(CEREMONY_DATE),
 }: SaveTheDateButtonProps) {
+  const { t } = useTranslation();
+  const eventTitle = t.saveTheDate.eventTitle;
   const formatDateForCalendar = (date: Date) => {
     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   };
@@ -61,7 +62,7 @@ export default function SaveTheDateButton({
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      Thêm vào lịch
+      {t.saveTheDate.button}
     </button>
   );
 }

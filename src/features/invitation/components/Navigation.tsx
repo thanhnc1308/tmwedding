@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { COLORS, FONTS, TRANSITIONS } from '../constants/design';
-
-const NAV_LINKS = [
-  { label: 'Sự kiện', href: '#event' },
-  { label: 'Hình ảnh', href: '#gallery' },
-  { label: 'Phản hồi', href: '#rsvp' },
-  { label: 'Lời chúc', href: '#guestbook' },
-];
+import { useTranslation } from '@/i18n';
 
 interface NavigationProps {
   links?: Array<{ label: string; href: string }>;
@@ -16,9 +10,16 @@ interface NavigationProps {
 }
 
 export default function Navigation({
-  links = NAV_LINKS,
+  links,
   className = '',
 }: NavigationProps) {
+  const { t } = useTranslation();
+  const navLinks = links ?? [
+    { label: t.navigation.event, href: '#event' },
+    { label: t.navigation.gallery, href: '#gallery' },
+    { label: t.navigation.rsvp, href: '#rsvp' },
+    { label: t.navigation.guestBook, href: '#guestbook' },
+  ];
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function Navigation({
           color: COLORS.textPrimary,
         }}
       >
-        {links.map((link, index) => (
+        {navLinks.map((link, index) => (
           <a
             key={index}
             href={link.href}

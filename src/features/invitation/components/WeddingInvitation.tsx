@@ -20,6 +20,7 @@ const WeddingGuestBook = dynamic(() => import('./WeddingGuestBook'), {
 });
 
 import MusicToggle from '@/features/invitation/components/MusicToggle';
+import LanguageSwitcher from '@/features/invitation/components/LanguageSwitcher';
 import { Box, Fade, Grow } from '@mui/material';
 import { Guest, GuestSource } from '@/types/guest';
 import { WeddingInvitationContext } from '@/features/invitation/context/WeddingInvitationContext';
@@ -86,6 +87,7 @@ export default function WeddingInvitation({
           onToggle={toggleMute}
         />
       )}
+      <LanguageSwitcher />
     </WeddingInvitationContext.Provider>
   );
 }

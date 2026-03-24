@@ -50,3 +50,5 @@ terraform/terraform.tfstate.backup
 
 design/
 claude/
+
+.claude-workspace

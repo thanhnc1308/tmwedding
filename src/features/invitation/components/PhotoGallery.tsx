@@ -8,6 +8,7 @@ import { COLORS, TRANSITIONS, sectionHeadingStyle } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
 import { Guest, GuestAgeComparison } from '@/types/guest';
 import { getGuestPronoun } from '@/utils/guest';
+import { useTranslation, interpolate } from '@/i18n';
 
 interface WeddingPhoto {
   id: string;
@@ -22,7 +23,7 @@ interface PhotoGalleryProps {
   photos?: WeddingPhoto[];
 }
 
-const AUTOPLAY_INTERVAL = 4000;
+const AUTOPLAY_INTERVAL = 3000;
 
 const PHOTOS: WeddingPhoto[] = [
   {
@@ -115,9 +116,11 @@ export default function PhotoGallery({
   guest,
   photos = PHOTOS,
 }: PhotoGalleryProps) {
+  const { t, locale } = useTranslation();
   const { wePronoun } = getGuestPronoun(
     guest?.ageComparison ?? GuestAgeComparison.Same,
     guest?.gender,
+    locale,
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -201,7 +204,9 @@ export default function PhotoGallery({
       <ScrollReveal>
         <Box sx={{ textAlign: 'center', mb: 5 }}>
           <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-            Một số khoảnh khắc của {wePronoun.toLowerCase()}
+            {interpolate(t.gallery.title, {
+              wePronoun: wePronoun.toLowerCase(),
+            })}
           </Typography>
         </Box>
       </ScrollReveal>

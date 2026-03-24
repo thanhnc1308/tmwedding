@@ -6,6 +6,7 @@ import { getEventsForSide } from '../constants/events';
 import ScrollReveal from './ScrollReveal';
 import { GuestSource } from '@/types/guest';
 import { CEREMONY_DATE } from '@/constants/wedding';
+import { useTranslation } from '@/i18n';
 
 interface EventInfoProps {
   side?: GuestSource;
@@ -13,15 +14,16 @@ interface EventInfoProps {
 }
 
 function MiniCalendar() {
+  const { t } = useTranslation();
   const date = new Date(CEREMONY_DATE);
   const year = date.getFullYear();
   const month = date.getMonth(); // 0-indexed
   const highlightDay = date.getDate();
-  const monthName = `Tháng ${month + 1}`;
+  const monthName = `${t.eventInfo.monthPrefix} ${month + 1}`;
 
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  const weekDays = t.eventInfo.weekDays;
 
   const cells: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
@@ -109,6 +111,7 @@ function MiniCalendar() {
 export default function EventInfo({
   side = GuestSource.Groom,
 }: EventInfoProps) {
+  const { t } = useTranslation();
   const events = getEventsForSide(side);
   const event = events[0];
 
@@ -158,21 +161,23 @@ export default function EventInfo({
               textTransform: 'uppercase',
             }}
           >
-            Chủ Nhật, ngày 05 tháng 04 năm 2026
+            {t.eventInfo.date}
           </Typography>
 
           {/* Lunar date */}
-          <Typography
-            sx={{
-              fontFamily: FONTS.serif,
-              fontSize: { xs: '0.8rem', sm: '0.9rem' },
-              fontStyle: 'italic',
-              color: COLORS.textSecondary,
-              mt: 0.5,
-            }}
-          >
-            (Tức ngày 18 tháng 02 năm Bính Ngọ)
-          </Typography>
+          {t.eventInfo.lunarDate && (
+            <Typography
+              sx={{
+                fontFamily: FONTS.serif,
+                fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                fontStyle: 'italic',
+                color: COLORS.textSecondary,
+                mt: 0.5,
+              }}
+            >
+              {t.eventInfo.lunarDate}
+            </Typography>
+          )}
 
           <MiniCalendar />
         </ScrollReveal>
@@ -198,7 +203,7 @@ export default function EventInfo({
               mb: 1.5,
             }}
           >
-            Tại
+            {t.eventInfo.at}
           </Typography>
 
           {/* Venue name */}
@@ -212,7 +217,7 @@ export default function EventInfo({
               letterSpacing: '0.02em',
             }}
           >
-            {event.venue}
+            {side === GuestSource.Groom ? t.eventInfo.groomVenue : t.eventInfo.brideVenue}
           </Typography>
 
           {/* Address */}
@@ -227,7 +232,7 @@ export default function EventInfo({
               mb: 1.5,
             }}
           >
-            {event.address}
+            {side === GuestSource.Groom ? t.eventInfo.groomAddress : t.eventInfo.brideAddress}
           </Typography>
 
           {/* Responsive Map */}
@@ -266,7 +271,7 @@ export default function EventInfo({
               },
             }}
           >
-            Xem đường đi
+            {t.eventInfo.getDirections}
           </Button>
         </ScrollReveal>
       </Box>

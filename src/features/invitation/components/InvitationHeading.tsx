@@ -5,11 +5,14 @@ import { COLORS, FONTS } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
 import { Guest, GuestAgeComparison } from '@/types/guest';
 import { getGuestPronoun } from '@/utils/guest';
+import { useTranslation, interpolate } from '@/i18n';
 
 export default function InvitationHeading({ guest }: { guest: Guest | null }) {
+  const { t, locale } = useTranslation();
   const { guestPronoun, wePronoun } = getGuestPronoun(
     guest?.ageComparison ?? GuestAgeComparison.Same,
     guest?.gender,
+    locale,
   );
 
   return (
@@ -34,11 +37,19 @@ export default function InvitationHeading({ guest }: { guest: Guest | null }) {
             letterSpacing: '0.02em',
           }}
         >
-          TRÂN TRỌNG KÍNH MỜI {guestPronoun.toUpperCase()} TỚI THAM DỰ TIỆC
+          {interpolate(t.heading.invitationLine1, {
+            guestPronoun: guestPronoun.toUpperCase(),
+          })}
           <br />
-          CHUNG VUI CÙNG {wePronoun.toUpperCase()}
-          <br />
-          Vào lúc
+          {t.heading.invitationLine2 && (
+            <>
+              {interpolate(t.heading.invitationLine2, {
+                wePronoun: wePronoun.toUpperCase(),
+              })}
+              <br />
+            </>
+          )}
+          {t.heading.atTime}
         </Typography>
       </ScrollReveal>
     </Box>

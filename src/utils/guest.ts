@@ -1,15 +1,20 @@
 import { GuestAgeComparison, GuestGender } from '@/types/guest';
+import type { Locale } from '@/i18n/config';
 
 /**
- * Returns the appropriate Vietnamese pronoun pair based on guest's age comparison and gender.
- * - "Bạn" for same-age guests
- * - Gendered honorifics (Anh/Chị, Em) for older/younger guests
- * The second value is "Chúng Mình" (same age) or "Bọn Mình" / similar collective pronoun.
+ * Returns the appropriate pronoun pair based on guest's age comparison, gender, and locale.
+ * In English, always returns "you"/"we".
+ * In Vietnamese, returns culturally-appropriate honorifics.
  */
 export function getGuestPronoun(
   ageComparison: GuestAgeComparison,
   gender?: GuestGender,
+  locale: Locale = 'vi',
 ): { guestPronoun: string; wePronoun: string } {
+  if (locale === 'en') {
+    return { guestPronoun: 'you', wePronoun: 'we' };
+  }
+
   if (ageComparison === GuestAgeComparison.Same) {
     return { guestPronoun: 'Bạn', wePronoun: 'Chúng mình' };
   }

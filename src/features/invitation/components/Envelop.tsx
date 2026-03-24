@@ -5,9 +5,11 @@ import { useWeddingInvitation } from '@/features/invitation/context/WeddingInvit
 import { Guest } from '@/types/guest';
 import { BRIDE_NAME, GROOM_NAME } from '@/constants/wedding';
 import { COLORS, FONTS } from '../constants/design';
+import { useTranslation } from '@/i18n';
 
 export default function Envelop({ guest }: { guest: Guest | null }) {
   const { handleOpenInvitation } = useWeddingInvitation();
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -60,7 +62,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
             },
           }}
         >
-          Trân trọng kính mời
+          {t.envelope.greeting}
         </Typography>
         <Typography
           sx={{
@@ -76,7 +78,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
             animationDelay: '0.2s',
           }}
         >
-          {guest?.name || 'Bạn'}
+          {guest?.name || t.envelope.defaultGuest}
         </Typography>
         <Typography
           sx={{
@@ -102,7 +104,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
             },
           }}
         >
-          đến dự lễ thành hôn của
+          {t.envelope.weddingOf}
         </Typography>
 
         {/* Couple names */}
@@ -267,7 +269,7 @@ export default function Envelop({ guest }: { guest: Guest | null }) {
               animationDelay: '1.3s',
             }}
           >
-            Nhấn vào đây để mở thiệp mời
+            {t.envelope.openCta}
           </Typography>
         </Box>
       </Box>

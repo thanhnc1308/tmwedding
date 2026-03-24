@@ -19,6 +19,7 @@ import { getGuestPronoun } from '@/utils/guest';
 import toast from 'react-hot-toast';
 import { COLORS, FONTS, TRANSITIONS } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import { useTranslation, interpolate } from '@/i18n';
 
 const StyledTextField = styled(TextField)(() => ({
   '& .MuiOutlinedInput-root': {
@@ -75,9 +76,11 @@ export default function InvitationResponse({
   guest,
   onSuccess,
 }: InvitationResponseProps) {
+  const { t, locale } = useTranslation();
   const { guestPronoun, wePronoun } = getGuestPronoun(
     guest?.ageComparison ?? GuestAgeComparison.Same,
     guest?.gender,
+    locale,
   );
 
   const [name, setName] = useState(guest?.name || '');
@@ -95,19 +98,19 @@ export default function InvitationResponse({
   const submitMutation = trpc.invitation.submitResponse.useMutation({
     onSuccess: () => {
       setIsSubmitted(true);
-      toast.success(`Cảm ơn ${guestPronoun.toLowerCase()} đã phản hồi!`);
+      toast.success(interpolate(t.rsvp.successToast, { guestPronoun: guestPronoun.toLowerCase() }));
       utils.invitation.getResponses.invalidate();
       onSuccess?.();
     },
     onError: (error) => {
-      toast.error(error.message || 'Có lỗi xảy ra, vui lòng thử lại.');
+      toast.error(error.message || t.rsvp.errorToast);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!attendance) {
-      toast.error('Vui lòng chọn xác nhận tham dự.');
+      toast.error(t.rsvp.validationError);
       return;
     }
     submitMutation.mutate({
@@ -134,7 +137,7 @@ export default function InvitationResponse({
                   mb: 2,
                 }}
               >
-                Cảm ơn {guestPronoun.toLowerCase()} đã phản hồi!
+                {interpolate(t.rsvp.thankYouTitle, { guestPronoun: guestPronoun.toLowerCase() })}
               </Typography>
               <Typography
                 sx={{
@@ -144,11 +147,12 @@ export default function InvitationResponse({
                   fontFamily: FONTS.serif,
                 }}
               >
-                {wePronoun} rất vui khi nhận được phản hồi của{' '}
-                {guestPronoun.toLowerCase()}.
-                <br />
-                Hẹn gặp {guestPronoun.toLowerCase()} trong ngày vui của{' '}
-                {wePronoun.toLowerCase()} nhé!
+                {interpolate(t.rsvp.thankYouMessage, {
+                  wePronoun: wePronoun,
+                  guestPronoun: guestPronoun.toLowerCase(),
+                }).split('\n').map((line, i) => (
+                  <span key={i}>{line}{i < 1 ? <br /> : null}</span>
+                ))}
               </Typography>
             </Box>
           </ScrollReveal>
@@ -172,9 +176,7 @@ export default function InvitationResponse({
               mb: 1,
             }}
           >
-            Để {wePronoun.toLowerCase()} có thể đón tiếp{' '}
-            {guestPronoun.toLowerCase()} một cách trọn vẹn nhất, hãy xác nhận sự
-            có mặt của {guestPronoun.toLowerCase()} nhé.
+            {interpolate(t.rsvp.intro, { wePronoun: wePronoun.toLowerCase(), guestPronoun: guestPronoun.toLowerCase() })}
             <br />
           </Typography>
 
@@ -191,7 +193,7 @@ export default function InvitationResponse({
                     fontFamily: FONTS.serif,
                   }}
                 >
-                  Tên của {guestPronoun.toLowerCase()}
+                  {interpolate(t.rsvp.nameLabel, { guestPronoun: guestPronoun.toLowerCase() })}
                 </Typography>
                 <StyledTextField
                   fullWidth
@@ -215,8 +217,7 @@ export default function InvitationResponse({
                   fontFamily: FONTS.serif,
                 }}
               >
-                {isKnownGuest ? `${name}` : `${guestPronoun.toLowerCase()}`} sẽ
-                đến chia vui trong tiệc cưới của {wePronoun.toLowerCase()} chứ?
+                {interpolate(t.rsvp.attendanceQuestion, { name: isKnownGuest ? name : guestPronoun.toLowerCase(), wePronoun: wePronoun.toLowerCase() })}
               </Typography>
               <RadioGroup
                 value={attendance}
@@ -232,7 +233,7 @@ export default function InvitationResponse({
                       }}
                     />
                   }
-                  label='Rất sẵn lòng có mặt'
+                  label={t.rsvp.acceptOption}
                   sx={{
                     border: `1px solid ${COLORS.borderGold}`,
                     borderRadius: 1,
@@ -258,7 +259,7 @@ export default function InvitationResponse({
                       }}
                     />
                   }
-                  label='Rất tiếc phải từ chối'
+                  label={t.rsvp.declineOption}
                   sx={{
                     border: `1px solid ${COLORS.borderGold}`,
                     borderRadius: 1,
@@ -288,14 +289,14 @@ export default function InvitationResponse({
                     fontFamily: FONTS.serif,
                   }}
                 >
-                  Và số lượng người tham gia
+                  {t.rsvp.guestCountLabel}
                 </Typography>
                 <StyledTextField
                   fullWidth
                   variant='outlined'
                   value={numberOfGuests}
                   onChange={(e) => setNumberOfGuests(e.target.value)}
-                  placeholder='Ví dụ: 1'
+                  placeholder={t.rsvp.guestCountPlaceholder}
                   size='medium'
                   type='number'
                   slotProps={{ htmlInput: { min: 1 } }}
@@ -314,8 +315,7 @@ export default function InvitationResponse({
                   fontFamily: FONTS.serif,
                 }}
               >
-                {guestPronoun} có muốn để lại lời nhắn, hay lời chúc gì cho{' '}
-                {wePronoun.toLowerCase()} không ^^?
+                {interpolate(t.rsvp.messageLabel, { guestPronoun: guestPronoun, wePronoun: wePronoun.toLowerCase() })}
               </Typography>
               <StyledTextField
                 fullWidth
@@ -324,7 +324,7 @@ export default function InvitationResponse({
                 rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder='Lời chúc...'
+                placeholder={t.rsvp.messagePlaceholder}
                 size='medium'
               />
             </Box>
@@ -342,7 +342,7 @@ export default function InvitationResponse({
                   sx={{ color: COLORS.textOnPrimary }}
                 />
               ) : (
-                'Gửi phản hồi'
+                t.rsvp.submitButton
               )}
             </SubmitButton>
           </Box>

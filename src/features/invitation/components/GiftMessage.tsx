@@ -5,11 +5,14 @@ import { COLORS, FONTS } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
 import { Guest, GuestAgeComparison } from '@/types/guest';
 import { getGuestPronoun } from '@/utils/guest';
+import { useTranslation, interpolate } from '@/i18n';
 
 export default function GiftMessage({ guest }: { guest: Guest | null }) {
+  const { t, locale } = useTranslation();
   const { guestPronoun, wePronoun } = getGuestPronoun(
     guest?.ageComparison ?? GuestAgeComparison.Same,
     guest?.gender,
+    locale,
   );
 
   return (
@@ -31,8 +34,7 @@ export default function GiftMessage({ guest }: { guest: Guest | null }) {
             mx: 'auto',
           }}
         >
-          Sự hiện diện và lời chúc của {guestPronoun.toLowerCase()} là món quà
-          quý giá nhất đối với {wePronoun.toLowerCase()}!
+          {interpolate(t.gift.message1, { guestPronoun: guestPronoun.toLowerCase(), wePronoun: wePronoun.toLowerCase() })}
         </Typography>
         <Typography
           sx={{
@@ -44,8 +46,7 @@ export default function GiftMessage({ guest }: { guest: Guest | null }) {
             fontFamily: FONTS.serif,
           }}
         >
-          Nếu {guestPronoun.toLowerCase()} muốn gửi gắm thêm tình cảm, có thể
-          tìm thấy thông tin bên dưới đây. {wePronoun} vô cùng trân trọng.
+          {interpolate(t.gift.message2, { guestPronoun: guestPronoun.toLowerCase(), wePronoun: wePronoun })}
         </Typography>
       </ScrollReveal>
     </Box>

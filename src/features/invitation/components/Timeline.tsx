@@ -4,32 +4,11 @@ import { Box, Typography, Container, Divider } from '@mui/material';
 import { COLORS, FONTS, sectionHeadingStyle } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
 import { GuestSource } from '@/types/guest';
-
-interface TimelineItem {
-  time: string;
-  title: string;
-}
-
-const groomTimelineItems: TimelineItem[] = [
-  { time: '10h', title: 'Đón khách' },
-  { time: '11h', title: 'Bữa trưa vui vẻ' },
-  { time: '13h30', title: 'Lễ vu quy' },
-  { time: '15h', title: 'Lễ thành hôn' },
-];
-
-const brideTimelineItems: TimelineItem[] = [
-  { time: '9h30', title: 'Đón khách' },
-  { time: '10h', title: 'Bữa trưa vui vẻ' },
-  { time: '13h30', title: 'Lễ vu quy' },
-  { time: '15h', title: 'Lễ thành hôn' },
-];
-
-function getTimelineItems(side: GuestSource): TimelineItem[] {
-  return side === GuestSource.Groom ? groomTimelineItems : brideTimelineItems;
-}
+import { useTranslation } from '@/i18n';
 
 export default function Timeline({ side }: { side: GuestSource }) {
-  const timelineItems = getTimelineItems(side);
+  const { t } = useTranslation();
+  const timelineItems = side === GuestSource.Groom ? t.timeline.groomEvents : t.timeline.brideEvents;
 
   return (
     <Box
@@ -44,7 +23,7 @@ export default function Timeline({ side }: { side: GuestSource }) {
         <ScrollReveal>
           <Box sx={{ textAlign: 'center', mb: 2 }}>
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-              Lịch trình nghi lễ
+              {t.timeline.title}
             </Typography>
           </Box>
         </ScrollReveal>

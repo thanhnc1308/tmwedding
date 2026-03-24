@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { FONTS } from '../constants/design';
+import { useTranslation } from '@/i18n';
 
 const formatNumber = (num: number) => {
   return num.toString().padStart(2, '0');
@@ -11,6 +12,8 @@ export default function CountdownTimer({
 }: {
   weddingDate: string;
 }) {
+  const { t } = useTranslation();
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -43,10 +46,10 @@ export default function CountdownTimer({
   }, [weddingDate]);
 
   const items = [
-    { label: 'Ngày', value: timeLeft.days },
-    { label: 'Giờ', value: timeLeft.hours },
-    { label: 'Phút', value: timeLeft.minutes },
-    { label: 'Giây', value: timeLeft.seconds },
+    { label: t.countdown.days, value: timeLeft.days },
+    { label: t.countdown.hours, value: timeLeft.hours },
+    { label: t.countdown.minutes, value: timeLeft.minutes },
+    { label: t.countdown.seconds, value: timeLeft.seconds },
   ];
 
   return (

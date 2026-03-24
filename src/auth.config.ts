@@ -2,12 +2,34 @@ import type { NextAuthConfig, User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { UserRole } from './types/auth';
 import { getUserRoleFromEmail } from './utils/auth';
+import { locales } from './i18n/config';
 
-const isAdminRoutes = (path: string) => path.startsWith('/admin');
+/**
+ * Strip the locale prefix from a path for route matching.
+ * e.g., '/vi/admin/guest-list' → '/admin/guest-list'
+ *       '/en/login' → '/login'
+ *       '/admin/guest-list' → '/admin/guest-list' (no change)
+ */
+function stripLocalePrefix(path: string): string {
+  for (const locale of locales) {
+    if (path.startsWith(`/${locale}/`)) {
+      return path.slice(`/${locale}`.length);
+    }
+    if (path === `/${locale}`) {
+      return '/';
+    }
+  }
+  return path;
+}
+
+const isAdminRoutes = (path: string) =>
+  stripLocalePrefix(path).startsWith('/admin');
 const isAdmin = (user?: User) =>
   getUserRoleFromEmail(user?.email) === UserRole.Admin;
-const shouldRedirectToDefault = (path: string) =>
-  path.startsWith('/login') || path.startsWith('/signup');
+const shouldRedirectToDefault = (path: string) => {
+  const stripped = stripLocalePrefix(path);
+  return stripped.startsWith('/login') || stripped.startsWith('/signup');
+};
 
 export const authConfig = {
   providers: [

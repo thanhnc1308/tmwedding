@@ -8,13 +8,15 @@ import { BANK_ACCOUNTS } from '@/constants/wedding';
 import toast from 'react-hot-toast';
 import { COLORS, FONTS, TRANSITIONS } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import { useTranslation } from '@/i18n';
 
 export default function WeddingMonetaryGift() {
+  const { t } = useTranslation();
   const [showContent, setShowContent] = useState(false);
 
   const handleCopyAccount = (account: (typeof BANK_ACCOUNTS)[0]) => {
     navigator.clipboard.writeText(account.accountNumber);
-    toast.success('Đã sao chép số tài khoản');
+    toast.success(t.gift.copiedToast);
   };
 
   return (
@@ -46,7 +48,7 @@ export default function WeddingMonetaryGift() {
           >
             <Image
               src='/images/gift-box.png'
-              alt='Hộp quà mừng'
+              alt={t.gift.giftBoxAlt}
               fill
               style={{ objectFit: 'contain' }}
             />
@@ -89,7 +91,7 @@ export default function WeddingMonetaryGift() {
                     letterSpacing: '0.1em',
                   }}
                 >
-                  {account.title}
+                  {account.id === 'bride' ? t.gift.brideTitle : t.gift.groomTitle}
                 </Typography>
 
                 {/* Name */}
@@ -135,9 +137,9 @@ export default function WeddingMonetaryGift() {
                 {/* Account Details */}
                 <Box sx={{ mb: 2.5 }}>
                   {[
-                    { label: 'Tên TK', value: account.accountName },
-                    { label: 'Số TK', value: account.accountNumber },
-                    { label: 'Ngân hàng', value: account.bankName },
+                    { label: t.gift.accountName, value: account.accountName },
+                    { label: t.gift.accountNumber, value: account.accountNumber },
+                    { label: t.gift.bankName, value: account.bankName },
                   ].map((item) => (
                     <Box
                       key={item.label}
@@ -194,7 +196,7 @@ export default function WeddingMonetaryGift() {
                     },
                   }}
                 >
-                  Sao chép số tài khoản
+                  {t.gift.copyAccount}
                 </Button>
               </Card>
             ))}

@@ -10,7 +10,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-import { months } from '../constants';
 import { trpc } from '@/utils/trpc';
 import {
   COLORS,
@@ -19,10 +18,12 @@ import {
   sectionHeadingStyle,
 } from '../constants/design';
 import ScrollReveal from './ScrollReveal';
+import { useTranslation } from '@/i18n';
 
 const AUTOPLAY_INTERVAL = 5000;
 
 export default function WeddingGuestBook() {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
@@ -85,7 +86,7 @@ export default function WeddingGuestBook() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const month = months[date.getMonth()];
+    const month = t.months[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
     return `${month} ${day}, ${year}`;
@@ -112,7 +113,7 @@ export default function WeddingGuestBook() {
             }}
           >
             <Typography variant='h2' component='h2' sx={sectionHeadingStyle}>
-              Sổ lưu bút
+              {t.guestBook.title}
             </Typography>
           </Box>
         </ScrollReveal>

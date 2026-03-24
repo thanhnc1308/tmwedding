@@ -5,11 +5,14 @@ import { Favorite } from '@mui/icons-material';
 import { COLORS, FONTS } from '../constants/design';
 import { Guest, GuestAgeComparison } from '@/types/guest';
 import { getGuestPronoun } from '@/utils/guest';
+import { useTranslation, interpolate } from '@/i18n';
 
 export default function Footer({ guest }: { guest: Guest | null }) {
+  const { t, locale } = useTranslation();
   const { guestPronoun, wePronoun } = getGuestPronoun(
     guest?.ageComparison ?? GuestAgeComparison.Same,
     guest?.gender,
+    locale,
   );
   return (
     <Box
@@ -48,7 +51,7 @@ export default function Footer({ guest }: { guest: Guest | null }) {
               lineHeight: 1.2,
             }}
           >
-            Thank you!
+            {t.footer.thankYou}
           </Typography>
 
           {/* Gratitude Message */}
@@ -61,18 +64,23 @@ export default function Footer({ guest }: { guest: Guest | null }) {
               fontWeight: 400,
               fontFamily: FONTS.serif,
               lineHeight: 1.8,
-              maxWidth: 500,
+              maxWidth: 550,
               mx: 'auto',
               mb: 4,
             }}
           >
-            Cảm ơn {guestPronoun.toLowerCase()} đã dành tình cảm cho{' '}
-            {wePronoun.toLowerCase()}.
-            <br />
-            {wePronoun} vô cùng trân quý khi được chia sẻ niềm hạnh phúc này
-            cùng {guestPronoun.toLowerCase()}.
-            <br />
-            Hẹn gặp {guestPronoun.toLowerCase()} tại buổi lễ nhé!
+            {interpolate(t.footer.message, {
+              guestPronoun: guestPronoun.toLowerCase(),
+              wePronoun: wePronoun,
+              wePronounLowerCase: wePronoun.toLowerCase(),
+            })
+              .split('\n')
+              .map((line, i, arr) => (
+                <span key={i}>
+                  {line}
+                  {i < arr.length - 1 ? <br /> : null}
+                </span>
+              ))}
           </Typography>
 
           {/* Made with Love Message */}
