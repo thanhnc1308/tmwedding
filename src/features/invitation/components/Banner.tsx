@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-// import Image from 'next/image';
+import Image from 'next/image';
 import { BRIDE_NAME, GROOM_NAME, CEREMONY_DATE } from '@/constants/wedding';
 import { FONTS } from '../constants/design';
 import CountdownTimer from './CountdownTimer';
@@ -27,13 +27,21 @@ export default function WeddingBanner({
       <Box
         sx={{
           position: 'relative',
-          backgroundImage: `url('${backgroundImage}')`,
-          backgroundSize: { xs: '220%', sm: 'cover' },
-          backgroundPosition: { xs: '55% center', sm: 'center' },
           pb: { xs: 6, sm: 12 },
           pt: { xs: 3, sm: 6 },
         }}
       >
+        <Image
+          src={backgroundImage}
+          alt=''
+          fill
+          priority
+          sizes='100vw'
+          style={{
+            objectFit: 'cover',
+            objectPosition: '55% center',
+          }}
+        />
         <Box
           sx={{
             position: 'absolute',

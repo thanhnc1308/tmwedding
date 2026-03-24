@@ -50,6 +50,7 @@ export default function WeddingMonetaryGift() {
               src='/images/gift-box.png'
               alt={t.gift.giftBoxAlt}
               fill
+              sizes='250px'
               style={{ objectFit: 'contain' }}
             />
           </Box>

@@ -49,94 +49,73 @@ const PHOTOS: WeddingPhoto[] = [
   },
   {
     id: '4',
-    src: '/images/gallery/3.2-engagement-ceremony.JPG',
-    alt: '3.2 engagement ceremony',
-    width: 1206,
-    height: 1812,
-  },
-  {
-    id: '5',
     src: '/images/gallery/3.3-engagement-ceremony.JPG',
     alt: '3.3 engagement ceremony',
     width: 1206,
     height: 801,
   },
   {
-    id: '6',
-    src: '/images/gallery/3.4-engagement-ceremony.JPG',
-    alt: '3.4 engagement ceremony',
-    width: 1206,
-    height: 1812,
-  },
-  {
-    id: '7',
-    src: '/images/gallery/3.5-engagement-ceremony.JPG',
-    alt: '3.5 engagement ceremony',
-    width: 1206,
-    height: 1812,
-  },
-  {
-    id: '8',
+    id: '5',
     src: '/images/gallery/4-marriage-registration.JPG',
     alt: '4 marriage registration',
     width: 1920,
     height: 2560,
   },
   {
-    id: '9',
+    id: '6',
     src: '/images/gallery/5.1-BIL00196.JPG',
     alt: '5.1 BIL00196',
-    width: 4672,
-    height: 7008,
+    width: 1333,
+    height: 2000,
+  },
+  {
+    id: '7',
+    src: '/images/gallery/5.2-BIL00573.JPG',
+    alt: '5.2 BIL00573',
+    width: 1333,
+    height: 2000,
+  },
+  {
+    id: '8',
+    src: '/images/gallery/6.1-BIL07734.JPG',
+    alt: '6.1 BIL07734',
+    width: 1333,
+    height: 2000,
+  },
+  {
+    id: '9',
+    src: '/images/gallery/6.2-BIL08229.JPG',
+    alt: '6.2 BIL08229',
+    width: 1333,
+    height: 2000,
   },
   {
     id: '10',
-    src: '/images/gallery/5.2-BIL00573.JPG',
-    alt: '5.2 BIL00573',
-    width: 4672,
-    height: 7008,
+    src: '/images/gallery/6.3-BIL08541.JPG',
+    alt: '6.3 BIL08541',
+    width: 1333,
+    height: 2000,
   },
   {
     id: '11',
-    src: '/images/gallery/6.1-BIL07734.JPG',
-    alt: '6.1 BIL07734',
-    width: 4672,
-    height: 7008,
+    src: '/images/gallery/7.1-BIL09147.JPG',
+    alt: '7.1 BIL09147',
+    width: 1333,
+    height: 2000,
   },
   {
     id: '12',
-    src: '/images/gallery/6.2-BIL08229.JPG',
-    alt: '6.2 BIL08229',
-    width: 4563,
-    height: 6844,
+    src: '/images/gallery/7.2-BIL09050.JPG',
+    alt: '7.2 BIL09050',
+    width: 1333,
+    height: 2000,
   },
   {
     id: '13',
-    src: '/images/gallery/6.3-BIL08541.JPG',
-    alt: '6.3 BIL08541',
-    width: 4672,
-    height: 7008,
-  },
-  {
-    id: '14',
-    src: '/images/gallery/7.1-BIL09147.JPG',
-    alt: '7.1 BIL09147',
-    width: 4529,
-    height: 6793,
-  },
-  {
-    id: '15',
-    src: '/images/gallery/7.2-BIL09050.JPG',
-    alt: '7.2 BIL09050',
-    width: 4672,
-    height: 7008,
-  },
-  {
-    id: '16',
     src: '/images/gallery/7.3-BIL09391.JPG',
     alt: '7.3 BIL09391',
-    width: 4531,
-    height: 6796,
+    width: 1333,
+    height: 2000,
   },
 ];
 
@@ -267,25 +246,33 @@ export default function PhotoGallery({
                 transform: `translateX(-${currentIndex * 100}%)`,
               }}
             >
-              {photos.map((photo, index) => (
-                <Box
-                  key={photo.id}
-                  sx={{
-                    flex: '0 0 100%',
-                    position: 'relative',
-                  }}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes='(max-width: 600px) 100vw, 600px'
-                    style={{ objectFit: 'cover' }}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    priority={index === 0}
-                  />
-                </Box>
-              ))}
+              {photos.map((photo, index) => {
+                const distance = Math.min(
+                  Math.abs(index - currentIndex),
+                  photos.length - Math.abs(index - currentIndex),
+                );
+                const isNear = distance <= 1;
+                return (
+                  <Box
+                    key={photo.id}
+                    sx={{
+                      flex: '0 0 100%',
+                      position: 'relative',
+                    }}
+                  >
+                    {isNear && (
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes='(max-width: 600px) 100vw, 600px'
+                        style={{ objectFit: 'cover' }}
+                        priority={index === 0}
+                      />
+                    )}
+                  </Box>
+                );
+              })}
             </Box>
           </Box>
 
