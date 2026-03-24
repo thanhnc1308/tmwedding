@@ -15,7 +15,7 @@ interface WeddingBannerProps {
 }
 
 export default function WeddingBanner({
-  backgroundImage = '/images/banner-bg-1.JPG',
+  backgroundImage = '/images/BIL09251.JPG',
   // groomPhoto = '/images/groom-avatar.png',
   // bridePhoto = '/images/bride-avatar.png',
 }: WeddingBannerProps) {
@@ -134,7 +134,7 @@ export default function WeddingBanner({
               sx={{
                 fontFamily: FONTS.script,
                 color: 'rgba(250, 250, 248, 0.6)',
-                fontSize: { xs: '2rem', sm: '5.5rem' },
+                fontSize: { xs: '2rem', sm: '3.5rem' },
                 fontWeight: 400,
                 alignSelf: 'center',
               }}
