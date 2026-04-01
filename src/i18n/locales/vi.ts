@@ -36,8 +36,8 @@ export const vi = {
   timeline: {
     title: 'Lịch trình nghi lễ',
     groomEvents: [
-      { time: '10h', title: 'Đón khách' },
-      { time: '11h', title: 'Bữa trưa vui vẻ' },
+      { time: '8h', title: 'Đón khách' },
+      { time: '9h', title: 'Bữa trưa thân mật' },
       { time: '13h30', title: 'Lễ vu quy' },
       { time: '15h', title: 'Lễ thành hôn' },
     ] as readonly { time: string; title: string }[],

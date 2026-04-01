@@ -40,8 +40,8 @@ export const en: TranslationDict = {
   timeline: {
     title: 'Ceremony Schedule',
     groomEvents: [
-      { time: '10:00 AM', title: 'Welcome Guests' },
-      { time: '11:00 AM', title: 'Lunch Reception' },
+      { time: '08:00 AM', title: 'Welcome Guests' },
+      { time: '09:00 AM', title: 'Lunch Reception' },
       { time: '1:30 PM', title: 'Bride Departure Ceremony' },
       { time: '3:00 PM', title: 'Wedding Ceremony' },
     ],
