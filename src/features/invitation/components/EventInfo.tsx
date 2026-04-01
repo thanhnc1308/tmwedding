@@ -143,9 +143,10 @@ export default function EventInfo({
             sx={{
               fontFamily: FONTS.serif,
               fontSize: { xs: '3.5rem', sm: '4.5rem' },
+              mb: 2,
               color: COLORS.textPrimary,
               fontWeight: 700,
-              lineHeight: 0.85,
+              lineHeight: 1,
             }}
           >
             {event.time}
@@ -217,7 +218,9 @@ export default function EventInfo({
               letterSpacing: '0.02em',
             }}
           >
-            {side === GuestSource.Groom ? t.eventInfo.groomVenue : t.eventInfo.brideVenue}
+            {side === GuestSource.Groom
+              ? t.eventInfo.groomVenue
+              : t.eventInfo.brideVenue}
           </Typography>
 
           {/* Address */}
@@ -232,7 +235,9 @@ export default function EventInfo({
               mb: 1.5,
             }}
           >
-            {side === GuestSource.Groom ? t.eventInfo.groomAddress : t.eventInfo.brideAddress}
+            {side === GuestSource.Groom
+              ? t.eventInfo.groomAddress
+              : t.eventInfo.brideAddress}
           </Typography>
 
           {/* Responsive Map */}

@@ -44,7 +44,7 @@ const GROOM_RECEPTION_EVENT: WeddingEvent = {
   title: 'Tư gia Nhà Trai',
   type: 'reception',
   date: '05.04.2026',
-  time: '11:00',
+  time: '09:00',
   venue: 'Tư gia Nhà Trai',
   address: 'Xóm 6, Thôn Trà Bồ, xã Đoàn Đào, tỉnh Hưng Yên',
   embededIframe: (
